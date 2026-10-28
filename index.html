@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>REY ENTERTAINMENT</title>
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --panel: #171717;
+      --gold: #c8a451;
+      --gold-light: #e2c77d;
+      --text: #f5f5f5;
+      --muted: #b8b8b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* LAYOUT UTAMA */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BANNER FULL WIDTH */
+.banner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.banner img {
+  display: block;
+  width: 100%;
+  height: clamp(110px, 22vh, 180px);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+/* AREA PROJECT */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 10px 4.2% 12px;
+  flex: 1;
+}
+
+.section-title {
+  margin: 0 0 6px;
+  color: var(--gold-light);
+  text-align: center;
+  font-size: clamp(24px, 2.5vw, 34px);
+  letter-spacing: 3px;
+}
+
+.section-subtitle {
+  margin: 0 0 12px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+/* TIGA KARTU SEJAJAR */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.project-card {
+  min-width: 0;
+  padding: 16px;
+  background: linear-gradient(145deg, #151515, #090909);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.project-card:hover {
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 145px;
+  padding: 11px 20px;
+  margin-top: 4px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #302719, #17120a);
+  color: var(--gold-light);
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.project-link:hover {
+  background: var(--gold);
+  color: #111;
+}
+
+
+/* BINGKAI GAMBAR SERAGAM */
+.project-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 2.1 / 1;
+  overflow: hidden;
+  background: #101010;
+  border: 1px solid #35302a;
+  border-radius: 8px;
+}
+
+.project-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* FOOTER */
+footer {
+  margin-top: auto;
+  padding: 12px 20px;
+  border-top: 1px solid #292929;
+  color: #888;
+  text-align: center;
+  font-size: 11px;
+}
+
+
+
+    @media (max-width: 800px) {
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .banner {
+        padding: 12px 12px 0;
+      }
+
+      .container {
+        padding: 28px 14px 36px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .project-grid {
+        gap: 10px;
+      }
+
+      .project-card {
+        padding: 9px;
+      }
+
+      .project-card h2 {
+        font-size: 14px;
+      }
+
+     
+
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="banner">
+    <img
+      src="REY_ENTERTAINMENT.png"
+      alt="REY ENTERTAINMENT"
+    >
+  </header>
+
+  <main class="container">
+    <h1 class="section-title">OUR PROJECTS</h1>
+    <p class="section-subtitle">
+      Music Technology &amp; Creative Applications
+    </p>
+
+    <section class="project-grid">
+      <article class="project-card">
+        <div class="project-image">
+          <img src="REY VIRTUAL DRUM.png"
+               alt="REY VIRTUAL DRUM">
+        </div>
+        <h2>REY VIRTUAL DRUM</h2>
+        <p>Aplikasi drum virtual interaktif.</p>
+        <a class="project-link"
+   href="https://reyentertainmentid-ai.github.io/rey-website/"
+   target="_blank" rel="noopener noreferrer">
+          Buka Aplikasi
+        </a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">
+          <img src="ReyMIDI KeyLab.png"
+               alt="ReyMIDI KeyLab">
+        </div>
+        <h2>ReyMIDI KeyLab</h2>
+        <p>MIDI &amp; HID Diagnostic Suite.</p>
+        <a class="project-link" href="#" data-project="keylab">
+          Buka Aplikasi
+        </a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">
+          <img src="REY Master Suite.png"
+               alt="REY Master Suite">
+        </div>
+        <h2>REY Master Suite</h2>
+        <p>Perangkat pengolahan audio.</p>
+        <a class="project-link" href="#" data-project="master-suite">
+          Segera Hadir
+        </a>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    © REY ENTERTAINMENT
+  </footer>
+
+</body>
+</html>
