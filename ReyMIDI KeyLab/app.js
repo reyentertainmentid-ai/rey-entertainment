@@ -172,7 +172,7 @@ clearMidiLog.addEventListener("click", () => {
    Suara piano (synth Web Audio)
    ============================================================ */
 
-const pianoSoundBtn = document.getElementById("pianoSoundToggle");
+
 
 const pianoSynth = {
     ctx: null,
@@ -231,7 +231,9 @@ loaded: false,
             const regions = [];
 
         
-while ((match = regionPattern.exec(sfzText)) !== null) {
+
+
+            while ((match = regionPattern.exec(sfzText)) !== null) {
     const line = match[1];
     const values = {};
 
@@ -379,7 +381,7 @@ async function preparePianoSamples() {
             master.connect(limiter);
             limiter.connect(ctx.destination);
 
-            ctx.addEventListener("statechange", updateSoundButton);
+            
 
             pianoSynth.ctx = ctx;
             pianoSynth.master = master;
@@ -394,36 +396,40 @@ async function preparePianoSamples() {
                 ])
             ).values()
         ];
-
-      // Muat dan decode sampel satu per satu.
-let berhasil = 0;
-let gagal = 0;
-
-for (const region of uniqueSamples) {
-    try {
-        await pianoSamples.getBuffer(region);
-        berhasil++;
-    } catch (error) {
-        gagal++;
-        console.error(
-            "Gagal memuat:",
-            region.sample,
-            error
+        // Muat dan decode semua sampel secara paralel.
+        const hasil = await Promise.allSettled(
+            uniqueSamples.map(region =>
+                pianoSamples.getBuffer(region)
+            )
         );
-    }
-}
 
-console.log(
-    `Persiapan piano selesai: ${berhasil} berhasil, ${gagal} gagal.`
-);
+        let berhasil = 0;
+        let gagal = 0;
 
+        hasil.forEach((result, index) => {
+            if (result.status === "fulfilled") {
+                berhasil++;
+            } else {
+                gagal++;
+
+                console.error(
+                    "Gagal memuat:",
+                    uniqueSamples[index].sample,
+                    result.reason
+                );
+            }
+        });
+
+        console.log(
+            `Persiapan piano selesai: ${berhasil} berhasil, ${gagal} gagal.`
+        );
         console.log(
             "Persiapan piano selesai:",
             pianoSamples.buffers.size,
             "sampel siap."
         );
 
-        updateSoundButton();
+        
 
     } catch (error) {
         console.error("Persiapan sampel piano gagal:", error);
@@ -435,18 +441,11 @@ function isPianoAudioRunning() {
     return !!(pianoSynth.ctx && pianoSynth.ctx.state === "running");
 }
 
-function updateSoundButton() {
-    let label = "Suara: hidup";
-    if (!pianoSynth.enabled) label = "Suara: mati";
-    else if (!isPianoAudioRunning()) label = "Klik untuk aktifkan suara";
 
-    pianoSoundBtn.textContent = label;
-    pianoSoundBtn.setAttribute("aria-pressed", String(pianoSynth.enabled && isPianoAudioRunning()));
-}
 
 // Browser menahan suara sampai ada klik atau tombol keyboard dari pengguna.
 // Pesan MIDI sendiri tidak dihitung, jadi suara dibuka saat gestur pertama.
-function unlockPianoAudio() {
+async function unlockPianoAudio() {
     try {
         if (!pianoSynth.ctx) {
             const AudioCtor = window.AudioContext || window.webkitAudioContext;
@@ -460,17 +459,19 @@ function unlockPianoAudio() {
             master.connect(limiter);
             limiter.connect(ctx.destination);
 
-            ctx.addEventListener("statechange", updateSoundButton);
+            
             pianoSynth.ctx = ctx;
             pianoSynth.master = master;
         }
 
-        if (pianoSynth.ctx.state === "suspended") pianoSynth.ctx.resume();
+       if (pianoSynth.ctx.state === "suspended") {
+    await pianoSynth.ctx.resume();
+}
     } catch (error) {
         console.error("ReyMIDI KeyLab - Suara piano gagal dibuka:", error);
     }
 
-    updateSoundButton();
+  
 }
 
 function startPianoNote(note, velocity) {
@@ -604,28 +605,18 @@ function releaseAllNotes() {
     Array.from(activeNotes).forEach((note) => showMidiNote(note, 0, false));
 }
 
-["pointerdown", "keydown"].forEach((type) => {
-    window.addEventListener(type, (event) => {
-        // Tombol Suara mengatur dirinya sendiri lewat klik
-        if (event.target && event.target.closest && event.target.closest("#pianoSoundToggle")) return;
-        if (!isPianoAudioRunning()) unlockPianoAudio();
-    });
-});
+const audioWelcome = document.getElementById("audioWelcome");
 
-pianoSoundBtn.addEventListener("click", () => {
-    if (!isPianoAudioRunning()) {
-        pianoSynth.enabled = true;
-        unlockPianoAudio();
-    } else {
-        pianoSynth.enabled = !pianoSynth.enabled;
-        if (!pianoSynth.enabled) stopAllPianoNotes();
+audioWelcome.addEventListener("click", async () => {
+    await unlockPianoAudio();
+
+    if (isPianoAudioRunning()) {
+        audioWelcome.classList.add("hidden");
+        console.log("REY MIDI KeyLab: Audio siap digunakan.");
     }
-
-    updateSoundButton();
-    pianoSoundBtn.blur();
 });
 
-updateSoundButton();
+
 
 // ===== SUSTAIN =====
 

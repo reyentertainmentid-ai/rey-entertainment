@@ -709,3 +709,46 @@ footer {
     font-size: 12px;
     line-height: 1.4;
 }
+
+/* AUDIO WELCOME SCREEN */
+.audio-welcome {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    cursor: pointer;
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.welcome-content img {
+    width: min(70vw, 420px);
+    height: auto;
+    object-fit: contain;
+}
+
+.welcome-content p {
+    margin: 0;
+    color: #d4af37;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.audio-welcome.hidden {
+    display: none;
+}
