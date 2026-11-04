@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -480,30 +479,99 @@ CreateGlow("choke");
 // ==================================================
 
 const activeCymbals = new Set();
+const audioBuffers = new Map();
+
+let audioContext = null;
+let audioLoadingReady = false;
+
+const audioFiles = new Set([
+    ...Object.values(drums).map(item => item.sound),
+    ...Object.values(cymbals).map(item => item.sound),
+    ...Object.values(hihat).map(item => item.sound),
+
+    "Sound/crash_shading/Crash_Shading.ogg",
+    "Sound/snare/Snare.ogg",
+    "Sound/spacebar/Stick.ogg",
+    "Sound/spacebar/Rimclick.ogg"
+]);
+
+async function LoadAllAudio() {
+    try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        const files = [...audioFiles];
+
+        console.log("JUMLAH AUDIO:", files.length);
+        console.log("DAFTAR AUDIO:", files);
+
+        let loaded = 0;
+
+        for (const path of files) {
+            const response = await fetch(path);
+
+            if (!response.ok) {
+                throw new Error("Gagal mengambil: " + path);
+            }
+
+            const data = await response.arrayBuffer();
+            const buffer = await audioContext.decodeAudioData(data);
+
+            audioBuffers.set(path, buffer);
+
+            loaded++;
+
+            console.log(
+                "Audio loading:",
+                loaded + "/" + files.length,
+                path
+            );
+        }
+
+        audioLoadingReady = true;
+
+        console.log("SEMUA AUDIO BERHASIL DIMUAT:", loaded);
+
+    } catch (error) {
+        audioLoadingReady = false;
+        console.error("Audio loading gagal:", error);
+    }
+}
+// Mulai loading otomatis saat halaman dibuka
+LoadAllAudio();
 
 function PlaySound(soundPath) {
-    const audio = new Audio(soundPath);
+    if (!audioLoadingReady || !audioContext) return;
 
-    audio.play().catch(function (error) {
-        console.error("Gagal memutar suara:", soundPath, error);
-    });
+    const buffer = audioBuffers.get(soundPath);
+    if (!buffer) return;
 
-    return audio;
+    const source = audioContext.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioContext.destination);
+
+    source.start();
+
+    return source;
 }
 
-
-
-const activeVolumeSounds = {};
-
 function PlaySoundWithVolume(soundPath, volumeLevel) {
-    const audio = new Audio(soundPath);
-    audio.volume = volumeLevel / 10;
+    if (!audioLoadingReady || !audioContext) return;
 
-    audio.play().catch(function (error) {
-        console.error("Gagal memutar suara:", soundPath, error);
-    });
+    const buffer = audioBuffers.get(soundPath);
+    if (!buffer) return;
 
-    return audio;
+    const source = audioContext.createBufferSource();
+    const gain = audioContext.createGain();
+
+    source.buffer = buffer;
+    gain.gain.value = volumeLevel / 10;
+
+    source.connect(gain);
+    gain.connect(audioContext.destination);
+
+    source.start();
+
+    return source;
 }
 
 
@@ -525,6 +593,8 @@ function PlayCymbal(name) {
     if (!cymbal) return;
 
     const audio = PlaySound(cymbal.sound);
+    if (!audio) return;
+
     activeCymbals.add(audio);
 
     audio.addEventListener("ended", function () {
@@ -535,11 +605,11 @@ function PlayCymbal(name) {
 }
 
 
-
 function ChokeCymbals() {
     activeCymbals.forEach(function (audio) {
-        audio.pause();
-        audio.currentTime = 0;
+        try {
+            audio.stop();
+        } catch (error) {}
     });
 
     activeCymbals.clear();
@@ -945,3 +1015,6 @@ UpdateKeyLabelPositions();
 </body>
 </body>
 </html>
+
+
+
