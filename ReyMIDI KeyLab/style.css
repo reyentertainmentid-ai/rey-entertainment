@@ -1,0 +1,711 @@
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main: #070708;
+    --bg-panel: #0f0f11;
+    --bg-inner: #0a0a0b;
+    --border: #2b2b30;
+    --text-main: #f1f1f4;
+    --text-muted: #9a9aa3;
+    --green: #45df9b;
+
+    /* Aksen emas: dipakai global */
+    --gold: #C49A32;
+    --gold-hi: #E5BD57;
+    --gold-dim: #7d6220;
+    --gold-glow: rgba(229, 189, 87, 0.6);
+    --k-line: #2b2b30;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+}
+
+.app-header {
+    flex: 0 0 66px;
+    padding: 10px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #0e0e10;
+    border-bottom: 1px solid var(--border);
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 21px;
+    color: var(--gold-hi);
+    letter-spacing: 1px;
+}
+
+.app-header p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.connection-status {
+    padding: 7px 11px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    background: var(--bg-inner);
+    color: var(--gold-hi);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.app-main {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    padding: 12px 18px;
+    display: grid;
+    grid-template-rows: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 12px;
+}
+
+.panel {
+    min-width: 0;
+    min-height: 0;
+    padding: 12px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-heading {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 9px;
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.panel-heading span {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.piano-panel {
+    overflow: hidden;
+}
+
+.piano {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-inner);
+}
+
+.bottom-panels {
+    min-height: 0;
+    display: grid;
+   grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: 12px;
+}
+
+.log-area {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-inner);
+    color: var(--text-muted);
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+#midiLog {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+button {
+    padding: 5px 11px;
+    border: 1px solid #34343a;
+    border-radius: 5px;
+    background: #1b1b1f;
+    color: #a5a5ae;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: var(--gold);
+    background: #1f1d16;
+    color: var(--gold-hi);
+}
+
+footer {
+    flex: 0 0 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    color: var(--gold-dim);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 700px) {
+    .app-header {
+        padding: 8px 12px;
+    }
+
+    .app-header h1 {
+        font-size: 17px;
+    }
+
+    .app-main {
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .bottom-panels {
+        gap: 8px;
+    }
+
+    .panel {
+        padding: 8px;
+    }
+}
+
+.virtual-keyboard {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #0a0a0b;
+}
+
+.piano-key {
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.white-key {
+    background: linear-gradient(to right, #ffffff, #e6e4de);
+    border: 1px solid #9a968c;
+    border-radius: 0 0 4px 4px;
+    color: #6b665a;
+    font-size: 9px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 5px;
+}
+
+.black-key {
+    background: linear-gradient(to bottom, #3a3a40, #101012 75%);
+    border: 1px solid #050506;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* Tuts ditekan: emas penuh */
+.piano-key.active {
+    background: linear-gradient(#f4d273, #c49a32) !important;
+    color: #17130A;
+    box-shadow: 0 0 12px 2px var(--gold-glow);
+    z-index: 3 !important;
+}
+
+
+/* ============================================================
+   HID Keyboard Test — tema hitam, cahaya emas
+   ============================================================ */
+
+.hid-panel {
+    min-width: 0;
+    min-height: 0;
+    padding: 10px 12px 12px;
+    background: #0a0a0b;
+    border-color: var(--k-line);
+}
+
+/* Bar atas */
+.hid-bar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    padding: 8px 12px;
+    background: #141417;
+    border: 1px solid var(--k-line);
+    border-radius: 12px;
+}
+
+.hid-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.hid-title-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: #1d1d21;
+    border: 1px solid #34343a;
+    color: var(--gold-hi);
+}
+
+.hid-title-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.hid-title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.hid-title-text strong {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f1f1f4;
+}
+
+.hid-progress {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.hid-progress-track {
+    width: 96px;
+    height: 4px;
+    overflow: hidden;
+    background: #2a2a2f;
+    border-radius: 4px;
+}
+
+.hid-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-hi));
+    box-shadow: 0 0 8px var(--gold-glow);
+    transition: width 0.2s ease;
+}
+
+#hidProgressText {
+    min-width: 30px;
+    color: #9a9aa3;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Tombol terakhir (CODE / KEYS) */
+.hid-recent {
+    flex: 1 1 260px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 8px;
+    background: #0e0e10;
+    border: 1px solid var(--k-line);
+    border-radius: 10px;
+}
+
+.hid-mode,
+.hid-os {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: #0e0e10;
+    border: 1px solid var(--k-line);
+    border-radius: 9px;
+}
+
+.hid-mode {
+    background: #1b1b1f;
+    border-color: #2f2f35;
+    border-radius: 7px;
+    padding: 2px;
+}
+
+.hid-panel .hid-mode button,
+.hid-panel .hid-os button {
+    padding: 4px 9px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #8b8b95;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.hid-panel .hid-os button {
+    padding: 6px 12px;
+    font-size: 11px;
+}
+
+.hid-panel .hid-mode button:hover,
+.hid-panel .hid-os button:hover {
+    color: var(--gold-hi);
+    background: #1b1b1f;
+}
+
+/* Status aktif: teks + garis tepi emas, tanpa isi penuh */
+.hid-panel .hid-mode button.active,
+.hid-panel .hid-os button.active {
+    background: #17140c;
+    color: var(--gold-hi);
+    box-shadow: inset 0 0 0 1px var(--gold);
+}
+
+.hid-recent-list {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    font-family: Consolas, monospace;
+    font-size: 11px;
+}
+
+.hid-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 2px 7px;
+    border: 1px solid #2f2f35;
+    border-radius: 5px;
+    background: #1b1b1f;
+    color: #8b8b95;
+}
+
+.hid-chip.latest {
+    border-color: var(--gold);
+    background: #17140c;
+    color: var(--gold-hi);
+}
+
+.hid-recent-empty {
+    color: #5f5f69;
+    font-size: 11px;
+}
+
+/* LED NUM / CAPS / SCROLL */
+.hid-leds {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 12px;
+    padding: 8px 12px;
+    background: #0e0e10;
+    border: 1px solid var(--k-line);
+    border-radius: 10px;
+}
+
+.hid-led {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #55555e;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hid-led::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3a3a41;
+}
+
+.hid-led.on {
+    color: #f1f1f4;
+}
+
+.hid-led.on::before {
+    background: var(--gold-hi);
+    box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* Tombol ikon */
+.hid-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.hid-panel .icon-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid #34343a;
+    border-radius: 10px;
+    background: #1b1b1f;
+    color: #a5a5ae;
+}
+
+.hid-panel .icon-btn:hover {
+    border-color: var(--gold);
+    background: #1f1d16;
+    color: var(--gold-hi);
+}
+
+.hid-panel .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.hid-panel .icon-btn[aria-pressed="true"] {
+    border-color: var(--gold);
+    background: #17140c;
+    color: var(--gold-hi);
+}
+
+.icon-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-btn .ic-on {
+    display: none;
+}
+
+.icon-btn[aria-pressed="true"] .ic-on {
+    display: block;
+}
+
+.icon-btn[aria-pressed="true"] .ic-off {
+    display: none;
+}
+
+.hid-panel button:focus-visible {
+    outline: 2px solid var(--gold-hi);
+    outline-offset: 1px;
+}
+
+/* Area keyboard */
+.hid-keys {
+    flex: 1 1 0;
+    min-height: 0;
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #0e0e10;
+    border: 1px solid var(--k-line);
+    border-radius: 12px;
+}
+
+.computer-keyboard {
+    --ux: 20px; /* diatur otomatis oleh JavaScript */
+    --uy: 20px;
+
+    position: relative;
+    flex: 0 0 auto;
+    width: calc(var(--ux) * 23.5);
+    height: calc(var(--uy) * 6.5);
+    user-select: none;
+}
+
+.keyboard-divider {
+    position: absolute;
+    left: calc(var(--ux) * 19);
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: #26262b;
+}
+
+.keyboard-key {
+    position: absolute;
+    left: calc(var(--x) * var(--ux));
+    top: calc(var(--y) * var(--uy));
+    width: calc(var(--w) * var(--ux) - 4px);
+    height: calc(var(--h) * var(--uy) - 4px);
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+
+    border: 1px solid #34343a;
+    border-radius: 6px;
+    background: linear-gradient(#27272b, #1b1b1e);
+    box-shadow: 0 3px 0 #060607;
+    color: #e9e9ee;
+
+    font-family: Consolas, monospace;
+    font-size: clamp(9px, calc(min(var(--ux), var(--uy)) * 0.27), 14px);
+    line-height: 1;
+
+    transition: background 0.12s ease, box-shadow 0.12s ease, transform 0.06s ease;
+}
+
+.keyboard-key.mod {
+    background: linear-gradient(#1c1c1f, #141416);
+    color: #9a9aa3;
+}
+
+/* Pernah ditekan: emas redup */
+.keyboard-key.tested {
+    border-color: #7d6220;
+    background: linear-gradient(#2b2518, #1c1810);
+    box-shadow: 0 3px 0 #060607, inset 0 0 10px rgba(196, 154, 50, 0.18);
+    color: var(--gold-hi);
+}
+
+/* Sedang ditekan: cahaya emas */
+.keyboard-key.down {
+    z-index: 2;
+    border-color: #ffe08a;
+    background: linear-gradient(#f4d273, #c49a32);
+    box-shadow:
+        0 1px 0 #060607,
+        0 0 12px 2px var(--gold-glow),
+        0 0 30px rgba(196, 154, 50, 0.4);
+    color: #17130A;
+    transform: translateY(2px);
+}
+
+
+/* ============================================================
+   Panel piano: tombol Suara + nada yang ditekan + chord
+   ============================================================ */
+
+.panel-tools {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tool-btn[aria-pressed="true"] {
+    border-color: var(--gold);
+    background: #17140c;
+    color: var(--gold-hi);
+}
+
+.now-playing {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 54px;
+    margin-bottom: 9px;
+    padding: 8px 12px;
+    background: #0e0e10;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.np-notes {
+    flex: 0 1 auto;
+    min-width: 120px;
+    max-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.np-empty {
+    color: #5f5f69;
+    font-size: 12px;
+}
+
+/* Nada yang sedang ditekan: emas penuh, sama seperti tuts piano */
+.np-note {
+    padding: 4px 10px;
+    border: 1px solid #ffe08a;
+    border-radius: 6px;
+    background: linear-gradient(#f4d273, #c49a32);
+    color: #17130A;
+    font-family: Consolas, monospace;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.1;
+    box-shadow: 0 0 10px rgba(229, 189, 87, 0.35);
+}
+
+.np-note sub {
+    margin-left: 1px;
+    font-size: 11px;
+    font-weight: 600;
+    vertical-align: baseline;
+    position: relative;
+    top: 3px;
+}
+
+.np-chord {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+}
+
+.np-chord strong {
+    flex: 0 0 auto;
+    color: var(--gold-hi);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.np-info {
+    min-width: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.4;
+}

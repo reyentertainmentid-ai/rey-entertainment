@@ -2,1026 +2,266 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REY Virtual Drum</title>
-    <link rel="icon" href="./REY_Virtual_Drum_Icon.ico?v=2" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
+  <title>REY ENTERTAINMENT</title>
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --panel: #171717;
+      --gold: #c8a451;
+      --gold-light: #e2c77d;
+      --text: #f5f5f5;
+      --muted: #b8b8b8;
+    }
+
     * {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
-
-    html, body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: #18191d;
-    }
-
-    #drum-background {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    object-position: center;
-}
 
     
-/* TOMBOL SHOW KEY */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
 
-#bottom-left-buttons {
-    position: fixed;
-    left: 1%;
-    top: 91%;
-    z-index: 100002;
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* LAYOUT UTAMA */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BANNER FULL WIDTH */
+.banner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+.banner img {
+  display: block;
+  width: 100%;
+  height: clamp(110px, 22vh, 180px);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+
+/* AREA PROJECT */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 10px 4.2% 12px;
+  flex: 1;
+}
+
+.section-title {
+  margin: 0 0 6px;
+  color: var(--gold-light);
+  text-align: center;
+  font-size: clamp(24px, 2.5vw, 34px);
+  letter-spacing: 3px;
+}
+
+.section-subtitle {
+  margin: 0 0 12px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+/* TIGA KARTU SEJAJAR */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.project-card {
+  min-width: 0;
+  padding: 16px;
+  background: linear-gradient(145deg, #151515, #090909);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.project-card:hover {
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 145px;
+  padding: 11px 20px;
+  margin-top: 4px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #302719, #17120a);
+  color: var(--gold-light);
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.project-link:hover {
+  background: var(--gold);
+  color: #111;
+}
+
+
+/* BINGKAI GAMBAR SERAGAM */
+.project-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 2.1 / 1;
+  overflow: hidden;
+  background: #101010;
+  border: 1px solid #35302a;
+  border-radius: 8px;
+}
+
+.project-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* FOOTER */
+footer {
+  margin-top: auto;
+  padding: 12px 20px;
+  border-top: 1px solid #292929;
+  color: #888;
+  text-align: center;
+  font-size: 11px;
 }
 
 
 
+    @media (max-width: 800px) {
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
 
-#show-key-btn,
-#fullscreen-btn {
-  width: 135px;
-    height: 44px;
-    white-space: nowrap;
+      .banner {
+          padding: 12px 12px 0;
+      }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+      .container {
+        padding: 28px 14px 36px;
+      }
+    }
 
-    padding: 10px 16px;
-    color: #E5C77C;
-    background: linear-gradient(180deg, #29251B, #111111);
-    border: 1px solid #B99A58;
-    border-radius: 8px;
+    @media (max-width: 420px) {
+      .project-grid {
+        gap: 10px;
+      }
 
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 0 8px #B99A5833;
-}
+      .project-card {
+        padding: 9px;
+      }
 
-#show-key-btn:hover,
-#fullscreen-btn:hover {
-    background: linear-gradient(180deg, #514326, #201B12);
-    box-shadow: 0 0 12px #D6B45B66;
-}
+      .project-card h2 {
+        font-size: 14px;
+      }
 
-#show-key-btn.active {
-    background: linear-gradient(180deg, #D8B968, #A78336);
-    color: #17130B;
-}
+     
 
 
-#bottom-right-buttons {
-    position: fixed;
-    right: 1%;
-    top: 91%;
-    z-index: 10000;
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#choke-btn,
-#rimclick-btn {
-    width: 135px;
-    height: 44px;
-    padding: 8px;
-    white-space: nowrap;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    color: #E5C77C;
-    background: linear-gradient(180deg, #29251B, #111111);
-    border: 1px solid #B99A58;
-    border-radius: 8px;
-
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 0 8px #B99A5833;
-}
-
-#choke-btn:hover,
-#rimclick-btn:hover {
-    background: linear-gradient(180deg, #514326, #201B12);
-    box-shadow: 0 0 12px #D6B45B66;
-}
-
-
-/* IKON STICK */
-#stick-icon {
-    position: fixed;
-    left: 51.00%;
-    top: 22.00%;
-    width: 70px;
-    height: 70px;
-    padding: 4px;
-    transform: translate(-50%, -50%);
-    object-fit: contain;
-    box-sizing: border-box;
-
-    border: 2px solid #D6B45B;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #29251B, #111111);
-    box-shadow: 0 0 8px #B99A5833;
-
-    z-index: 9000;
-    cursor: default;
-    user-select: none;
-}
-
-
-/* IKON CRASH SHADING */
-#crash-shading-icon {
-    position: fixed;
-    left: 45.00%;
-    top: 84.00%;
-    width: 70px;
-    height: 70px;
-    padding: 4px;
-    transform: translate(-50%, -50%);
-    object-fit: contain;
-    box-sizing: border-box;
-
-    border: 2px solid #D6B45B;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #29251B, #111111);
-    box-shadow: 0 0 8px #B99A5833;
-
-    z-index: 9000;
-    cursor: default;
-    user-select: none;
-}
-
-/* IKON SNARE VOL */
-#snare-vol-icon {
-    position: fixed;
-    left: 55.00%;
-    top: 84.00%;
-    width: 70px;
-    height: 70px;
-    padding: 4px;
-    transform: translate(-50%, -50%);
-    object-fit: contain;
-    box-sizing: border-box;
-
-    border: 2px solid #D6B45B;
-    border-radius: 50%;
-    background: linear-gradient(180deg, #29251B, #111111);
-    box-shadow: 0 0 8px #B99A5833;
-
-    z-index: 9000;
-    cursor: default;
-    user-select: none;
-}
-
-
-
-/* LABEL SHORTCUT - HURUF SAJA */
-.key-label {
-    position: fixed;
-    z-index: 10002;
-    display: none;
-
-    transform: translate(-50%, -50%);
-
-    padding: 0;
-    margin: 0;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-
-    color: #FFD76A;
-font-family: Arial, sans-serif;
-font-size: 20px;
-font-weight: 900;
-text-align: center;
-white-space: nowrap;
-
-/* PINGGIRAN HITAM PADA HURUF GOLD */
--webkit-text-stroke: 0.6px #000000;
-
-text-shadow:
-    1px 1px 2px #000000,
-    0 0 4px #000000;
-
-
-    pointer-events: none;
-}
-
-.key-label.visible {
-    display: block;
-}
-
-
-</style>
-
+    }
+  </style>
 </head>
 
 <body>
+
+  <header class="banner">
     <img
-        id="drum-background"
-        src="Desain%201.jpg"
-        alt="REY Virtual Drum"
+      src="REY_ENTERTAINMENT.png"
+      alt="REY ENTERTAINMENT"
     >
-    <img
-    id="stick-icon"
-    src="stick.png"
-    alt="STICK"
-    draggable="false"
->
-    <img
-    id="crash-shading-icon"
-    src="crash_shading1.png"
-    alt="CRASH SHADING"
-    draggable="false"
->
+  </header>
+
+  <main class="container">
+    <h1 class="section-title">OUR PROJECTS</h1>
+    <p class="section-subtitle">
+      Music Technology &amp; Creative Applications
+    </p>
+
+    <section class="project-grid">
+      <article class="project-card">
+        <div class="project-image">
+          <img src="REY VIRTUAL DRUM.png"
+               alt="REY VIRTUAL DRUM">
+        </div>
+        <h2>REY VIRTUAL DRUM</h2>
+        <p>Aplikasi drum virtual interaktif.</p>
+        <a class="project-link"
+   href="https://reyentertainmentid-ai.github.io/rey-virtual-drum/"
+   target="_blank" rel="noopener noreferrer">
+          Buka Aplikasi
+        </a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">
+          <img src="ReyMIDI KeyLab.png"
+               alt="ReyMIDI KeyLab">
+        </div>
+        <h2>ReyMIDI KeyLab</h2>
+        <p>MIDI &amp; HID Diagnostic Suite.</p>
+        <a class="project-link" href="https://reyentertainmentid-ai.github.io/reymidi-keylab/" data-project="keylab" target="_blank" rel="noopener noreferrer">
+          Buka Aplikasi
+        </a>
+      </article>
+
+      <article class="project-card">
+        <div class="project-image">
+          <img src="REY Master Suite.png"
+               alt="REY Master Suite">
+        </div>
+        <h2>REY Master Suite</h2>
+        <p>Perangkat pengolahan audio.</p>
+      <a class="project-link" href="master-suite.html" data-project="master-suite" target="_blank" rel="noopener noreferrer">
+  COBA KLIK BRO
+</a>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    © REY ENTERTAINMENT
+  </footer>
 
-<img
-    id="snare-vol-icon"
-    src="snare_vol1.png"
-    alt="SNARE VOL"
-    draggable="false"
->
-
-
-
-<div id="bottom-left-buttons">
-    <button id="show-key-btn" type="button">
-        <span aria-hidden="true">⌨</span>
-        <span>SHOW KEY</span>
-    </button>
-
-    <button id="fullscreen-btn" type="button">
-        <span aria-hidden="true">⛶</span>
-        <span>MAXIMAZE</span>
-    </button>
-</div>
-
-
-
-<script>
-// ==================================================
-// 1. PENGATURAN GOLDEN GLOW GLOBAL
-// ==================================================
-
-const GLOW_COLOR = "#FFD45A";
-const GLOW_DURATION = 100; // Durasi cahaya (ms)
-const GLOW_SIZE = 100;      // Diameter cahaya (px)
-
-
-// ==================================================
-// 2. DAFTAR INSTRUMEN
-// ==================================================
-
-const drums = {
-    snare: {
-        sound: "Sound/snare/Snare.ogg",
-        x: 43.00,
-        y: 57.00,
-        keys: ["ArrowUp", "ArrowDown", "KeyC"]
-    },
-
-    kick: {
-        sound: "Sound/kick/Kick.ogg",
-        x: 50.00,
-        y: 66.02,
-        keys: ["ArrowLeft", "ArrowRight", "KeyZ", "KeyX"]
-    },
-     tom1: {
-        sound: "Sound/tom1/Tom1_1.ogg",
-        x: 46.12,
-        y: 45.90,
-        keys: ["KeyF"]
-    },
-
-    tom2: {
-        sound: "Sound/tom2/Tom2_1.ogg",
-        x: 54.25,
-        y: 46.21,
-        keys: ["KeyH"]
-    },
-
-    tom3: {
-        sound: "Sound/tom3/Tom3_1.ogg",
-        x: 60.05,
-        y: 57.18,
-        keys: ["KeyK"]
-    },
-
-        cowbell: {
-        sound: "Sound/cowbell/Cowbell.ogg",
-        x: 64.86,
-        y: 50.46,
-        keys: ["KeyB"]
-    }
-};
-
-
-const cymbals = {
-    splash: {
-        sound: "Sound/splash/Splash.ogg",
-        x: 39.33,
-        y: 39.89,
-        key: "KeyQ"
-    },
-
-    crash1: {
-        sound: "Sound/crash1/Crash1_1.ogg",
-        x: 35.64,
-        y: 29.62,
-        key: "KeyE"
-    },
-
-    crash2: {
-        sound: "Sound/crash2/Crash2_1.ogg",
-        x: 44.27,
-        y: 27.46,
-        key: "KeyT"
-    },
-
-    crash3: {
-        sound: "Sound/crash3/Crash3_1.ogg",
-        x: 57.95,
-        y: 26.30,
-        key: "KeyU"
-    },
-
-    china: {
-        sound: "Sound/china/China.ogg",
-        x: 52.65,
-        y: 34.33,
-        key: "KeyO"
-    },
-
-    ride: {
-        sound: "Sound/ride/Ride1.ogg",
-        x: 64.49,
-        y: 36.26,
-        key: "KeyA"
-    }
-};
-
-// KOORDINAT GOLDEN GLOW Rim Click
-const rimclickGlow = {
-    x: 94.00,
-    y: 93.00
-};
-// ==================================================
-// 3. PENGATURAN KHUSUS HI-HAT
-// ==================================================
-
-const hihat = {
-    open: {
-        sound: "Sound/hi_hat_open/Open_Hi_Hat.ogg",
-        x: 34.03,
-        y: 45.31
-    },
-
-    pedal: {
-        sound: "Sound/hi_hat/Pedal Hihat.ogg",
-        x: 36.67,
-        y: 76.93
-    },
-
-    closed: {
-        sound: "Sound/hi_hat/Close Hiihat.ogg",
-        x: 34.03,
-        y: 45.31
-    }
-};
-
-
-// ==================================================
-// 4. PERSIAPAN GAMBAR DAN GOLDEN GLOW
-// ==================================================
-
-const drumImage = document.getElementById("drum-background");
-const glowElements = {};
-const glowTimers = {};
-
-function CreateGlow(name) {
-    const glow = document.createElement("div");
-    glow.id = "glow-" + name;
-
-    Object.assign(glow.style, {
-        position: "fixed",
-        width: GLOW_SIZE + "px",
-        height: GLOW_SIZE + "px",
-        borderRadius: "50%",
-        pointerEvents: "none",
-        zIndex: "10001",
-        opacity: "0",
-        transform: "translate(-50%, -50%)",
-        background: "radial-gradient(circle, " +
-            GLOW_COLOR + "AA 0%, " +
-            GLOW_COLOR + "70 35%, " +
-            GLOW_COLOR + "30 60%, transparent 80%)",
-        transition: "opacity 40ms ease-out"
-    });
-
-    document.body.appendChild(glow);
-    glowElements[name] = glow;
-}
-
-function PlayGlow(name, x, y) {
-    const rect = drumImage.getBoundingClientRect();
-    const glow = glowElements[name];
-
-    glow.style.left = (rect.left + rect.width * x / 100) + "px";
-    glow.style.top = (rect.top + rect.height * y / 100) + "px";
-    glow.style.opacity = "1";
-
-    clearTimeout(glowTimers[name]);
-
-    glowTimers[name] = setTimeout(function () {
-        glow.style.opacity = "0";
-    }, GLOW_DURATION);
-}
-
-CreateGlow("snare");
-CreateGlow("kick");
-CreateGlow("hihat-open");
-CreateGlow("hihat-pedal");
-CreateGlow("hihat-closed");
-CreateGlow("tom1");
-CreateGlow("tom2");
-CreateGlow("tom3");
-CreateGlow("rimclick");
-CreateGlow("stick");
-CreateGlow("crash-shading");
-CreateGlow("snare-vol");
-CreateGlow("cowbell");
-CreateGlow("splash");
-CreateGlow("crash1");
-CreateGlow("crash2");
-CreateGlow("crash3");
-CreateGlow("china");
-CreateGlow("ride");
-CreateGlow("choke");
-
-// ==================================================
-
- // ==================================================
- // 5. SATU SISTEM PEMUTAR SUARA - AUDIO SIAP PAKAI
- // ==================================================
-
-const activeCymbals = new Set();
-const activeVolumeSounds = {};
-const audioPools = new Map();
-
-const AUDIO_POOL_SIZE = 5;
-
-// Siapkan beberapa salinan audio untuk setiap suara.
-function PrepareAudio(soundPath) {
-    if (audioPools.has(soundPath)) {
-        return audioPools.get(soundPath);
-    }
-
-    const pool = [];
-
-    for (let i = 0; i < AUDIO_POOL_SIZE; i++) {
-        const audio = new Audio(soundPath);
-
-        audio.preload = "auto";
-        audio.load();
-
-        pool.push({
-            audio: audio,
-            busy: false
-        });
-
-        audio.addEventListener("ended", function () {
-            const item = pool.find(function (entry) {
-                return entry.audio === audio;
-            });
-
-            if (item) {
-                item.busy = false;
-            }
-        });
-
-        audio.addEventListener("error", function () {
-            console.error("Gagal memuat suara:", soundPath);
-        });
-    }
-
-    audioPools.set(soundPath, pool);
-    return pool;
-}
-
-// Putar suara menggunakan audio yang sudah disiapkan.
-function PlaySound(soundPath, volumeLevel = 10) {
-    const pool = PrepareAudio(soundPath);
-
-    let item = pool.find(function (entry) {
-        return !entry.busy;
-    });
-
-    // Jika semua salinan sedang dipakai, gunakan yang paling awal.
-    if (!item) {
-        item = pool[0];
-    }
-
-    const audio = item.audio;
-
-    item.busy = true;
-    audio.volume = Math.max(0, Math.min(10, volumeLevel)) / 10;
-
-    try {
-        audio.currentTime = 0;
-    } catch (error) {
-        // Browser mungkin belum siap mengatur posisi audio.
-    }
-
-    const playback = audio.play();
-
-    if (playback && typeof playback.catch === "function") {
-        playback.catch(function (error) {
-            item.busy = false;
-            console.error("Gagal memutar suara:", soundPath, error);
-        });
-    }
-
-    return audio;
-}
-
-function PlaySoundWithVolume(soundPath, volumeLevel) {
-    return PlaySound(soundPath, volumeLevel);
-}
-
-function PlayDrum(name) {
-    const drum = drums[name];
-
-    if (!drum) return;
-
-    PlaySound(drum.sound);
-    PlayGlow(name, drum.x, drum.y);
-}
-
-function PlayCymbal(name) {
-    const cymbal = cymbals[name];
-
-    if (!cymbal) return;
-
-    const audio = PlaySound(cymbal.sound);
-
-    activeCymbals.add(audio);
-
-    audio.addEventListener("ended", function () {
-        activeCymbals.delete(audio);
-    }, { once: true });
-
-    PlayGlow(name, cymbal.x, cymbal.y);
-}
-
-function ChokeCymbals() {
-    activeCymbals.forEach(function (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-    });
-
-    activeCymbals.clear();
-}
-
-function PlayHiHat(mode) {
-    const data = hihat[mode];
-
-    if (!data) return;
-
-    PlaySound(data.sound);
-    PlayGlow("hihat-" + mode, data.x, data.y);
-}
-
-// Muat suara instrumen lebih awal setelah halaman siap.
-function PreloadDrumSounds() {
-    const soundPaths = new Set();
-
-    Object.values(drums).forEach(function (drum) {
-        soundPaths.add(drum.sound);
-    });
-
-    Object.values(cymbals).forEach(function (cymbal) {
-        soundPaths.add(cymbal.sound);
-    });
-
-    Object.values(hihat).forEach(function (item) {
-        soundPaths.add(item.sound);
-    });
-
-    soundPaths.add("Sound/crash_shading/Crash_Shading.ogg");
-    soundPaths.add("Sound/spacebar/Stick.ogg");
-    soundPaths.add("Sound/spacebar/Rimclick.ogg");
-
-    soundPaths.forEach(function (path) {
-        PrepareAudio(path);
-    });
-}
-
-if (document.readyState === "complete") {
-    PreloadDrumSounds();
-} else {
-    window.addEventListener("load", PreloadDrumSounds, { once: true });
-}
-
-
- // ==================================================
- // 6. SISTEM SHORTCUT KEYBOARD
- // ==================================================
-
-const pressedKeys = new Set();
-let shiftUsedForHiHat = false;
-
-document.addEventListener("keydown", function (event) {
-    
-    // SIMBAL REY VIRTUAL DRUM
-    const cymbalKeys = {
-        "KeyQ": "splash",
-        "KeyE": "crash1",
-        "KeyT": "crash2",
-        "KeyU": "crash3",
-        "KeyO": "china",
-        "KeyA": "ride"
-    };
-
-    // CRASH SHADING: angka atas + Numpad 1, 2, 3
-const crashShadingKeys = {
-    "Digit1": 3,
-    "Digit2": 7,
-    "Digit3": 8,
-
-    "Numpad1": 3,
-    "Numpad2": 7,
-    "Numpad3": 8
-};
-
-    if (crashShadingKeys[event.code] !== undefined) {
-        event.preventDefault();
-
-        if (event.repeat) return;
-
-        PlaySoundWithVolume(
-            "Sound/crash_shading/Crash_Shading.ogg",
-            crashShadingKeys[event.code],
-               
-        );
-
-        PlayGlow("crash-shading", 45.00, 84.00);
-        return;
-    }
-
-  // SNARE VOL: angka atas + Numpad 6, 7, 8
-const snareVolKeys = {
-    "Digit6": 3,
-    "Digit7": 7,
-    "Digit8": 8,
-
-    "Numpad6": 3,
-    "Numpad7": 7,
-    "Numpad8": 8
-};
-
-    if (snareVolKeys[event.code] !== undefined) {
-        event.preventDefault();
-
-        if (event.repeat) return;
-
-        PlaySoundWithVolume(
-            "Sound/snare/Snare.ogg",
-            snareVolKeys[event.code],
-            
-        );
-
-        PlayGlow("snare-vol", 55.00, 84.00);
-        return;
-    }
-
-  
-    // CHOKE: tombol Ctrl
-    if (event.code === "ControlLeft" || event.code === "ControlRight") {
-        event.preventDefault();
-
-        if (!event.repeat) {
-            ChokeCymbals();
-
-            const rect = drumImage.getBoundingClientRect();
-            const glow = glowElements["choke"];
-
-            glow.style.left = (rect.left + rect.width * 0.84) + "px";
-            glow.style.top = (rect.top + rect.height * 0.93) + "px";
-            glow.style.opacity = "1";
-        }
-
-        return;
-    }
-
-
-    if (cymbalKeys[event.code]) {
-        event.preventDefault();
-        if (event.repeat) return;
-        PlayCymbal(cymbalKeys[event.code]);
-        return;
-    }
-
-    
-    
-    
-    
-    // Hi-Hat Open / Closed
-    if (event.code === "KeyS") {
-        event.preventDefault();
-
-        if (event.repeat) return;
-
-        if (event.shiftKey) {
-            shiftUsedForHiHat = true;
-            PlayHiHat("closed");
-        } else {
-            PlayHiHat("open");
-        }
-
-        return;
-    }
-
-    // Shift: Pedal Hi-Hat langsung berbunyi
-    if (event.code === "ShiftLeft" ||
-        event.code === "ShiftRight") {
-
-        event.preventDefault();
-
-        if (event.repeat) return;
-
-        shiftUsedForHiHat = false;
-        PlayHiHat("pedal");
-        return;
-    }
-
-    // Snare dan Bass Kick
-    if (event.repeat) return;
-
-    for (const name in drums) {
-        if (drums[name].keys.includes(event.code)) {
-            event.preventDefault();
-            PlayDrum(name);
-            return;
-        }
-    }
-
-    
-
-    // STICK: tombol Space
-    if (event.code === "Space") {
-
-        event.preventDefault();
-
-        if (event.repeat) return;
-
-        PlaySound("Sound/spacebar/Stick.ogg");
-        PlayGlow("stick", 51.00, 22.00);
-
-        return;
-    }
-
-
-    
-    // Rim Click: tombol angka 9
-   
-if (event.code === "Digit9" || event.code === "Numpad9") {
-    event.preventDefault();
-
-    PlaySound("Sound/spacebar/Rimclick.ogg");
-    PlayGlow("rimclick", rimclickGlow.x, rimclickGlow.y);
-
-    return;
-}
-
-
-});
-
-
-document.addEventListener("keyup", function(event) {
-    pressedKeys.delete(event.code);
-
-    // CHOKE: glow mati saat Ctrl dilepas
-    if (event.code === "ControlLeft" || event.code === "ControlRight") {
-        glowElements["choke"].style.opacity = "0";
-    }
-
-
-});
-// ==================================================
-// 7. ALAT UKUR KOORDINAT SEMENTARA
-// Klik gambar, lalu lihat Console F12.
-// ==================================================
-
-drumImage.addEventListener("click", function (event) {
-    const rect = drumImage.getBoundingClientRect();
-
-    const x = (event.clientX - rect.left) / rect.width * 100;
-    const y = (event.clientY - rect.top) / rect.height * 100;
-
-    console.log(
-        "Koordinat gambar: X =", x.toFixed(2) + "%",
-        "| Y =", y.toFixed(2) + "%"
-    );
-});
-
-
-/* ==================================================
-   TOMBOL FULL SCREEN
-   ================================================== */
-
-
-const fullscreenBtn = document.getElementById("fullscreen-btn");
-
-function UpdateFullscreenButton() {
-    const isFullscreen = !!document.fullscreenElement;
-
-    fullscreenBtn.innerHTML = isFullscreen
-        ? '<span aria-hidden="true">⛶</span><span>MINIMAZE</span>'
-        : '<span aria-hidden="true">⛶</span><span>MAXIMAZE</span>';
-}
-
-fullscreenBtn.addEventListener("click", async function () {
-    // Jika berjalan sebagai aplikasi WPF WebView2
-    if (window.chrome && window.chrome.webview) {
-        
-
-        window.chrome.webview.postMessage(
-            fullscreenBtn.dataset.maximized === "true"
-                ? "restore"
-                : "maximize"
-        );
-
-        fullscreenBtn.dataset.maximized =
-            fullscreenBtn.dataset.maximized === "true" ? "false" : "true";
-
-        UpdateFullscreenButton();
-        fullscreenBtn.innerHTML =
-            fullscreenBtn.dataset.maximized === "true"
-                ? '<span aria-hidden="true">⛶</span><span>MINIMAZE</span>'
-                : '<span aria-hidden="true">⛶</span><span>MAXIMAZE</span>';
-
-        return;
-    }
-
-    // Jika berjalan di Chrome, pertahankan fungsi fullscreen lama
-    try {
-        if (!document.fullscreenElement) {
-            await document.documentElement.requestFullscreen();
-        } else {
-            await document.exitFullscreen();
-        }
-    } catch (error) {
-        console.error("Gagal mengubah mode fullscreen:", error);
-    }
-});
-
-document.addEventListener("fullscreenchange", UpdateFullscreenButton);
-
-
-
-
-
-
-/* ==================================================
-   8. TOMBOL SHOW KEY
-   ================================================== */
-
-const showKeyBtn = document.getElementById("show-key-btn");
-const keyLabels = [];
-
-function CreateKeyLabel(name, x, y, keys) {
-    const label = document.createElement("div");
-
-    label.className = "key-label";
-    label.textContent = keys.map(function (key) {
-    if (key.startsWith("Key")) return key.slice(3);
-    if (key.startsWith("Digit")) return key.slice(5);
-    if (key.startsWith("Numpad")) return "Num " + key.slice(6);
-
-    if (key === "ArrowUp") return "Up";
-    if (key === "ArrowDown") return "Down";
-    if (key === "ArrowLeft") return "Left";
-    if (key === "ArrowRight") return "Right";
-
-    return key;
-}).join(" ");
-    label.style.left = x + "%";
-    label.style.top = y + "%";
-    label.style.transform = "translate(-50%, -50%)";
-    label.style.display = "none";
-
-    document.body.appendChild(label);
-
-    keyLabels.push({
-        element: label,
-        x: x,
-        y: y
-    });
-}
-
-// Tombol Show Key: tampilkan atau sembunyikan shortcut
-if (showKeyBtn) {
-    showKeyBtn.addEventListener("click", function () {
-        const isHidden = keyLabels.length > 0 &&
-            keyLabels[0].element.style.display === "none";
-
-        keyLabels.forEach(function (item) {
-            item.element.style.display = isHidden ? "block" : "none";
-        });
-
-        showKeyBtn.classList.toggle("active", isHidden);
-    });
-}
-
-
-// Label untuk Hi-Hat
-
- // Label untuk Drum
-Object.entries(drums).forEach(function ([name, drum]) {
-    CreateKeyLabel(name, drum.x, drum.y, drum.keys);
-});
-
-// Label untuk Cymbal
-Object.entries(cymbals).forEach(function ([name, cymbal]) {
-    CreateKeyLabel(name, cymbal.x, cymbal.y, [cymbal.key]);
-
-});
-
-// Label untuk Hi-Hat
-CreateKeyLabel("hihat-open", hihat.open.x, hihat.open.y, ["S"]);
-CreateKeyLabel("hihat-closed", hihat.closed.x, hihat.closed.y, ["S"]);
-CreateKeyLabel("hihat-pedal", hihat.pedal.x, hihat.pedal.y, ["Shift"]);
-// Label untuk fitur tambahan
-CreateKeyLabel("rimclick", 90, 90, ["9"]);
-CreateKeyLabel("choke", 80, 90, ["Ctrl"]);
-CreateKeyLabel("stick", 51, 22, ["Space"]);
-CreateKeyLabel("crash-shading", 45, 84, ["1 2 3"]);
-CreateKeyLabel("snare-vol", 55, 84, ["6 7 8"]);
-
-// Tampilkan atau sembunyikan label
-showKeyBtn.addEventListener("click", function () {
-    const isVisible = showKeyBtn.classList.toggle("active");
-
-    keyLabels.forEach(function (item) {
-        item.element.classList.toggle("visible", isVisible);
-    });
-
-    showKeyBtn.querySelector("span:last-child").textContent =
-        isVisible ? "HIDE KEY" : "SHOW KEY";
-});
-
-// Atur posisi label mengikuti gambar
-function UpdateKeyLabelPositions() {
-    const rect = drumImage.getBoundingClientRect();
-
-    keyLabels.forEach(function (item) {
-        item.element.style.left =
-            (rect.left + rect.width * item.x / 100) + "px";
-
-        item.element.style.top =
-            (rect.top + rect.height * item.y / 100) + "px";
-    });
-}
-
-window.addEventListener("resize", UpdateKeyLabelPositions);
-drumImage.addEventListener("load", UpdateKeyLabelPositions);
-
-UpdateKeyLabelPositions();
-
-</script>
-
-<div id="bottom-right-buttons">
-    <button id="choke-btn" type="button">
-        <span aria-hidden="true">✋</span>
-        <span>CHOKE</span>
-    </button>
-
-   <button id="rimclick-btn" type="button">
-    <span aria-hidden="true">🥁</span>
-    <span>RIM CLICK</span>
-</button>
-</div>
-
-
-
-</body>
 </body>
 </html>

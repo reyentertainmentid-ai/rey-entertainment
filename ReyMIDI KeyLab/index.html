@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReyMIDI KeyLab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <div>
+            <h1>ReyMIDI KeyLab</h1>
+            <p>MIDI &amp; HID Diagnostic Suite</p>
+        </div>
+       
+<div class="connection-status" id="connectionStatus">
+    MIDI: Belum terhubung
+</div>
+
+    </header>
+
+    <main class="app-main">
+
+        <section class="panel piano-panel">
+            <div class="panel-heading">
+                <h2>VIRTUAL PIANO</h2>
+                <div class="panel-tools">
+                    <button type="button" id="pianoSoundToggle" class="tool-btn" aria-pressed="true">Suara: hidup</button>
+                    <button type="button" id="pianoSustainToggle" class="tool-btn" aria-pressed="false">Sustain: OFF</button>
+                    <span>Rentang A0 – C8</span>
+                </div>
+            </div>
+
+            <div class="now-playing">
+                <div id="npNotes" class="np-notes">
+                    <span class="np-empty">Tekan tuts untuk melihat nadanya</span>
+                </div>
+                <div class="np-chord">
+                    <strong id="npChordName">—</strong>
+                    <span id="npChordInfo" class="np-info"></span>
+                </div>
+            </div>
+
+            <div id="piano" class="piano">
+                Piano akan ditampilkan di sini.
+            </div>
+        </section>
+
+        <div class="bottom-panels">
+
+           <section class="panel">
+    <div class="panel-heading">
+        <h2>MIDI LOG</h2>
+        <div class="panel-tools">
+            <button id="pauseMidiLog" class="tool-btn" aria-pressed="false">Pause: OFF</button>
+            <button id="clearMidiLog">Clear</button>
+        </div>
+    </div>
+
+    <div id="midiLog" class="log-area">
+        Menunggu pesan MIDI...
+    </div>
+</section>
+
+            
+
+<section class="panel hid-panel">
+                <div class="hid-bar">
+                    <div class="hid-title">
+                        <span class="hid-title-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M6 9.5h.01M10 9.5h.01M14 9.5h.01M18 9.5h.01M6 13h.01M18 13h.01M9 15.5h6"/></svg>
+                        </span>
+                        <div class="hid-title-text">
+                            <strong>KEYBOARD TEST</strong>
+                            <div class="hid-progress">
+                                <div class="hid-progress-track">
+                                    <div id="hidProgressFill" class="hid-progress-fill"></div>
+                                </div>
+                                <span id="hidProgressText">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hid-recent">
+                        <div class="hid-mode" role="group" aria-label="Tampilan tombol terakhir">
+                            <button type="button" id="hidCodeMode" class="active" title="Nomor HID tombol (Usage ID)">HID map</button>
+                            <button type="button" id="hidKeysMode">KEYS</button>
+                        </div>
+                        <div id="hidRecent" class="hid-recent-list" aria-live="polite"></div>
+                    </div>
+
+                    <div class="hid-leds" aria-label="Indikator LED keyboard">
+                        <span id="numLockIndicator" class="hid-led">NUM</span>
+                        <span id="capsLockIndicator" class="hid-led">CAPS</span>
+                        <span id="scrollLockIndicator" class="hid-led">SCROLL</span>
+                    </div>
+
+                    <div class="hid-os" role="group" aria-label="Sistem operasi">
+                        <button type="button" id="hidOsWin" class="active">Win</button>
+                        <button type="button" id="hidOsMac">Mac</button>
+                    </div>
+
+                    <div class="hid-actions">
+                        <button type="button" id="hidSoundToggle" class="icon-btn" aria-pressed="false" title="Suara tombol: mati">
+                            <svg class="ic-off" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
+                            <svg class="ic-on" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                        </button>
+                        <button type="button" id="hidLockToggle" class="icon-btn" aria-pressed="false" title="Kunci tombol sistem (layar penuh)">
+                            <svg class="ic-off" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-1.8"/></svg>
+                            <svg class="ic-on" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                        </button>
+                        <button type="button" id="resetHidTest" class="icon-btn" title="Reset tes keyboard">
+                            <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="hidKeys" class="hid-keys">
+                    <div id="computerKeyboard" class="computer-keyboard"></div>
+                </div>
+            </section>
+
+
+
+        </div>
+    </main>
+
+    <footer>
+        REY ENTERTAINMENT
+    </footer>
+
+    <script src="sound-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
