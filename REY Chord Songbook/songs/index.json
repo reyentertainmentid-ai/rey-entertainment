@@ -1,0 +1,62 @@
+[
+ {
+  "id": "amazing-grace",
+  "t": "Amazing Grace",
+  "a": "John Newton",
+  "k": "G"
+ },
+ {
+  "id": "auld-lang-syne",
+  "t": "Auld Lang Syne",
+  "a": "Robert Burns",
+  "k": "G"
+ },
+ {
+  "id": "cublak-cublak-suweng",
+  "t": "Cublak-Cublak Suweng",
+  "a": "Tradisional (Jawa)",
+  "k": "C"
+ },
+ {
+  "id": "greensleeves",
+  "t": "Greensleeves",
+  "a": "Tradisional (Inggris)",
+  "k": "Am"
+ },
+ {
+  "id": "house-of-the-rising-sun",
+  "t": "House of the Rising Sun",
+  "a": "Tradisional (Amerika)",
+  "k": "Am"
+ },
+ {
+  "id": "ibu-kita-kartini",
+  "t": "Ibu Kita Kartini",
+  "a": "W.R. Supratman",
+  "k": "C"
+ },
+ {
+  "id": "oh-susanna",
+  "t": "Oh! Susanna",
+  "a": "Stephen Foster",
+  "k": "C"
+ },
+ {
+  "id": "scarborough-fair",
+  "t": "Scarborough Fair",
+  "a": "Tradisional (Inggris)",
+  "k": "Dm"
+ },
+ {
+  "id": "silent-night",
+  "t": "Silent Night",
+  "a": "Franz Gruber & Joseph Mohr",
+  "k": "C"
+ },
+ {
+  "id": "when-the-saints-go-marching-in",
+  "t": "When the Saints Go Marching In",
+  "a": "Tradisional (Spiritual)",
+  "k": "C"
+ }
+]
