@@ -228,11 +228,20 @@ text-shadow:
 }
 
 
+
+/* TOMBOL BERANDA */
+.rey-home{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1b160d;border:1.5px solid #8a6a1e;color:#f4d67e;text-decoration:none}
+.rey-home[hidden]{display:none}
+.rey-home svg{width:18px;height:18px;display:block}
+.rey-home:hover{border-color:#f4d67e}
+.rey-home:focus-visible{outline:3px solid #f4d67e;outline-offset:2px}
+.rey-home{position:fixed;left:max(12px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));z-index:100003}
 </style>
 
 </head>
 
 <body>
+    <a class="rey-home" href="../index.html" aria-label="Kembali ke beranda REY Entertainment" title="Beranda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></a><script>(function(){var a=document.querySelector(".rey-home");if(a&&window.chrome&&window.chrome.webview)a.hidden=true;})();</script>
     <img
         id="drum-background"
         src="Desain%201.jpg"

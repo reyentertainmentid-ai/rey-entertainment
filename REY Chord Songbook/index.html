@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090909">
+<title>REY Chord Songbook</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --gold: #d5ad58;
+    --gold-light: #f2d58b;
+    --bg: #090909;
+    --panel: #151515;
+    --text: #f2f2f2;
+    --muted: #888;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+button, input {
+    font: inherit;
+}
+
+.app {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 24px 3%;
+}
+
+/* HEADER */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.brand-icon {
+    width: 54px;
+    height: 54px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--gold);
+    font-size: 25px;
+    box-shadow: 0 0 12px #d5ad5830;
+}
+
+.brand-name {
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.brand-name span {
+    color: var(--gold);
+}
+
+.brand-subtitle {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.header-tag {
+    color: var(--gold);
+    border: 1px solid #594725;
+    padding: 8px 13px;
+    border-radius: 20px;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+/* WELCOME */
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.welcome h1 span {
+    color: var(--gold);
+}
+
+.welcome p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* SEARCH */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: var(--panel);
+    border: 1px solid #303030;
+    border-radius: 10px;
+    padding: 0 16px;
+    height: 50px;
+    margin-bottom: 27px;
+}
+
+.search-box span {
+    color: var(--gold);
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.search-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 14px;
+}
+
+.search-box input::placeholder {
+    color: #777;
+}
+
+/* SECTION */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.section-heading h2 {
+    font-size: 16px;
+    letter-spacing: .5px;
+}
+
+.section-heading small {
+    color: var(--gold);
+    font-size: 11px;
+}
+
+/* CATEGORIES */
+
+.categories {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 27px;
+    scrollbar-width: none;
+}
+
+.categories::-webkit-scrollbar {
+    display: none;
+}
+
+.category {
+    flex-shrink: 0;
+    background: #171717;
+    border: 1px solid #333;
+    color: #aaa;
+    padding: 9px 17px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: .2s;
+}
+
+.category.active,
+.category:hover {
+    background: var(--gold);
+    color: #111;
+    border-color: var(--gold);
+    font-weight: bold;
+}
+
+/* SONG LIST */
+
+.song-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.song-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: var(--panel);
+    border: 1px solid #292929;
+    border-radius: 11px;
+    padding: 14px;
+    min-width: 0;
+    transition: .2s;
+}
+
+.song-card:hover {
+    border-color: #80652f;
+    transform: translateY(-2px);
+}
+
+.song-cover {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    background: #292114;
+    border: 1px solid #6b5328;
+    border-radius: 8px;
+    color: var(--gold);
+    font-size: 21px;
+}
+
+.song-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.song-info h3 {
+    font-size: 13px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-info p {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.favorite {
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 21px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.favorite.active {
+    color: var(--gold);
+}
+
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted);
+    padding: 35px 10px;
+    font-size: 13px;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 18px;
+    border-top: 1px solid #292929;
+}
+
+.nav-item {
+    background: transparent;
+    border: none;
+    color: #777;
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.nav-item span {
+    display: block;
+    font-size: 19px;
+    margin-bottom: 5px;
+}
+
+.nav-item.active {
+    color: var(--gold);
+    background: #211b10;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .app {
+        padding: 16px;
+    }
+
+    header {
+        margin-bottom: 24px;
+    }
+
+    .brand-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 21px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .header-tag {
+        font-size: 9px;
+        padding: 7px 9px;
+    }
+
+    .welcome h1 {
+        font-size: 23px;
+    }
+
+    .song-list {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-nav {
+        gap: 0;
+        justify-content: space-around;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <header>
+        <div class="brand">
+            <div class="brand-icon">♫</div>
+            <div>
+                <div class="brand-name"><span>REY</span> CHORD</div>
+                <div class="brand-subtitle">SONGBOOK</div>
+            </div>
+        </div>
+
+        <div class="header-tag">LYRICS • CHORDS</div>
+    </header>
+
+    <section class="welcome">
+        <h1>Selamat datang di <span>REY</span></h1>
+        <p>Temukan lagu dan mainkan musik favoritmu.</p>
+    </section>
+
+    <div class="search-box">
+        <span>⌕</span>
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Cari judul lagu atau penyanyi..."
+        >
+    </div>
+
+    <section>
+        <div class="section-heading">
+            <h2>KATEGORI LAGU</h2>
+            <small>PILIH GENRE</small>
+        </div>
+
+        <div class="categories" id="categories">
+            <button class="category active" data-category="Semua">Semua</button>
+            <button class="category" data-category="Dangdut">Dangdut</button>
+            <button class="category" data-category="Pop">Pop</button>
+            <button class="category" data-category="Rock">Rock</button>
+            <button class="category" data-category="Religi">Religi</button>
+            <button class="category" data-category="Lainnya">Lainnya</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2 id="listTitle">SEMUA LAGU</h2>
+            <small id="songCount">6 LAGU</small>
+        </div>
+
+        <div class="song-list" id="songList"></div>
+    </section>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-page="home">
+            <span>⌂</span>Home
+        </button>
+
+        <button class="nav-item" data-page="favorites">
+            <span>♡</span>Favorites
+        </button>
+
+        <button class="nav-item" data-page="mySongs">
+            <span>♫</span>My Songs
+        </button>
+    </nav>
+
+</div>
+
+<script>
+const songs = [
+    { id: 1, title: "Bintang di Malam Hari", artist: "Penyanyi Contoh", genre: "Pop" },
+    { id: 2, title: "Rindu yang Tertinggal", artist: "Penyanyi Contoh", genre: "Dangdut" },
+    { id: 3, title: "Langkah Perjalanan", artist: "Penyanyi Contoh", genre: "Rock" },
+    { id: 4, title: "Cahaya Kehidupan", artist: "Penyanyi Contoh", genre: "Religi" },
+    { id: 5, title: "Kenangan Indah", artist: "Penyanyi Contoh", genre: "Pop" },
+    { id: 6, title: "Malam Penuh Cerita", artist: "Penyanyi Contoh", genre: "Dangdut" }
+];
+
+let activeCategory = "Semua";
+let activePage = "home";
+let favorites = new Set();
+
+const songList = document.getElementById("songList");
+const searchInput = document.getElementById("searchInput");
+
+function renderSongs() {
+    const keyword = searchInput.value.toLowerCase();
+
+    let filtered = songs.filter(song => {
+        const matchesSearch =
+            song.title.toLowerCase().includes(keyword) ||
+            song.artist.toLowerCase().includes(keyword);
+
+        const matchesCategory =
+            activeCategory === "Semua" ||
+            song.genre === activeCategory;
+
+        const matchesPage =
+            activePage === "home" ||
+            (activePage === "favorites" && favorites.has(song.id));
+
+        return matchesSearch && matchesCategory && matchesPage;
+    });
+
+    document.getElementById("listTitle").textContent =
+        activePage === "favorites" ? "LAGU FAVORIT" : "SEMUA LAGU";
+
+    document.getElementById("songCount").textContent =
+        filtered.length + " LAGU";
+
+    if (filtered.length === 0) {
+        songList.innerHTML =
+            '<div class="empty">Belum ada lagu yang ditemukan.</div>';
+        return;
+    }
+
+    songList.innerHTML = filtered.map(song => `
+        <div class="song-card">
+            <div class="song-cover">♫</div>
+
+            <div class="song-info">
+                <h3>${song.title}</h3>
+                <p>${song.artist} • ${song.genre}</p>
+            </div>
+
+            <button
+                class="favorite ${favorites.has(song.id) ? "active" : ""}"
+                data-id="${song.id}"
+                aria-label="Favorit"
+            >${favorites.has(song.id) ? "♥" : "♡"}</button>
+        </div>
+    `).join("");
+}
+
+searchInput.addEventListener("input", renderSongs);
+
+document.getElementById("categories").addEventListener("click", event => {
+    const button = event.target.closest(".category");
+    if (!button) return;
+
+    activeCategory = button.dataset.category;
+
+    document.querySelectorAll(".category").forEach(item => {
+        item.classList.toggle("active", item === button);
+    });
+
+    renderSongs();
+});
+
+songList.addEventListener("click", event => {
+    const button = event.target.closest(".favorite");
+    if (!button) return;
+
+    const id = Number(button.dataset.id);
+
+    if (favorites.has(id)) {
+        favorites.delete(id);
+    } else {
+        favorites.add(id);
+    }
+
+    renderSongs();
+});
+
+document.querySelector(".bottom-nav").addEventListener("click", event => {
+    const button = event.target.closest(".nav-item");
+    if (!button) return;
+
+    activePage = button.dataset.page;
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.toggle("active", item === button);
+    });
+
+    if (activePage === "mySongs") {
+        document.getElementById("listTitle").textContent = "MY SONGS";
+        document.getElementById("songCount").textContent = "0 LAGU";
+        songList.innerHTML =
+            '<div class="empty">Fitur koleksi lagu pribadi akan kita buat pada tahap berikutnya.</div>';
+        return;
+    }
+
+    renderSongs();
+});
+
+renderSongs();
+</script>
+
+</body>
+</html>
