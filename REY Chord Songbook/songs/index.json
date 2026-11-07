@@ -1,9 +1,33 @@
 [
  {
+  "id": "2dsd",
+  "t": "2Dsd",
+  "a": "Peterpan",
+  "k": "Bm"
+ },
+ {
+  "id": "ada-apa-denganmu",
+  "t": "Ada Apa Denganmu",
+  "a": "Peterpan",
+  "k": "D"
+ },
+ {
+  "id": "aku-dan-bintang",
+  "t": "Aku Dan Bintang",
+  "a": "Peterpan",
+  "k": "C"
+ },
+ {
   "id": "amazing-grace",
   "t": "Amazing Grace",
   "a": "John Newton",
   "k": "G"
+ },
+ {
+  "id": "andaikan-kau-datang",
+  "t": "Andaikan Kau Datang",
+  "a": "Noah",
+  "k": "D"
  },
  {
   "id": "auld-lang-syne",
@@ -12,15 +36,75 @@
   "k": "G"
  },
  {
+  "id": "biar-ku-sendiri",
+  "t": "Biar Ku Sendiri",
+  "a": "Noah",
+  "k": "Em"
+ },
+ {
+  "id": "bintang-di-surga",
+  "t": "Bintang Di Surga",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "cinta-bukan-dusta",
+  "t": "Cinta Bukan Dusta",
+  "a": "Noah",
+  "k": "E"
+ },
+ {
+  "id": "cobalah-mengerti",
+  "t": "Cobalah Mengerti",
+  "a": "Noah",
+  "k": "C"
+ },
+ {
   "id": "cublak-cublak-suweng",
   "t": "Cublak-Cublak Suweng",
   "a": "Tradisional (Jawa)",
   "k": "C"
  },
  {
+  "id": "dan-hilang",
+  "t": "Dan Hilang",
+  "a": "Peterpan",
+  "k": "D"
+ },
+ {
+  "id": "di-balik-awan",
+  "t": "Di Balik Awan",
+  "a": "Peterpan",
+  "k": "A"
+ },
+ {
+  "id": "di-belakangku",
+  "t": "Di Belakangku",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "diatas-normal",
+  "t": "Diatas Normal",
+  "a": "Peterpan",
+  "k": "A"
+ },
+ {
   "id": "greensleeves",
   "t": "Greensleeves",
   "a": "Tradisional (Inggris)",
+  "k": "Am"
+ },
+ {
+  "id": "hari-yang-cerah-untuk-jiwa-yang-sepi",
+  "t": "Hari Yang Cerah Untuk Jiwa Yang Sepi",
+  "a": "Peterpan",
+  "k": "Am"
+ },
+ {
+  "id": "hero",
+  "t": "Hero",
+  "a": "Noah",
   "k": "Am"
  },
  {
@@ -36,9 +120,165 @@
   "k": "C"
  },
  {
+  "id": "ini-cinta",
+  "t": "Ini Cinta",
+  "a": "Noah",
+  "k": "E"
+ },
+ {
+  "id": "jalani-mimpi",
+  "t": "Jalani Mimpi",
+  "a": "Noah",
+  "k": "Ab"
+ },
+ {
+  "id": "jauh-mimpiku",
+  "t": "Jauh Mimpiku",
+  "a": "Peterpan",
+  "k": "G"
+ },
+ {
+  "id": "jika-engkau",
+  "t": "Jika Engkau",
+  "a": "Noah",
+  "k": "A"
+ },
+ {
+  "id": "kala-cinta-menggoda",
+  "t": "Kala Cinta Menggoda",
+  "a": "Noah",
+  "k": "C"
+ },
+ {
+  "id": "khayalan-tingkat-tingg",
+  "t": "Khayalan Tingkat Tingg",
+  "a": "Peterpan",
+  "k": "Am"
+ },
+ {
+  "id": "kisah-cintaku",
+  "t": "Kisah Cintaku",
+  "a": "Noah",
+  "k": "C"
+ },
+ {
+  "id": "kota-mati",
+  "t": "Kota Mati",
+  "a": "Peterpan",
+  "k": "C"
+ },
+ {
+  "id": "ku-katakan-dengan-indah",
+  "t": "Ku Katakan Dengan Indah",
+  "a": "Peterpan",
+  "k": "D"
+ },
+ {
+  "id": "kupeluk-hatimu",
+  "t": "Kupeluk Hatimu",
+  "a": "Noah",
+  "k": "D"
+ },
+ {
+  "id": "kupu-kupu-malam",
+  "t": "Kupu-Kupu Malam",
+  "a": "Noah",
+  "k": "D"
+ },
+ {
+  "id": "lihat-langkahku",
+  "t": "Lihat Langkahku",
+  "a": "Noah",
+  "k": "A"
+ },
+ {
+  "id": "masa-lalu-tertinggal",
+  "t": "Masa Lalu Tertinggal",
+  "a": "Peterpan",
+  "k": "E"
+ },
+ {
+  "id": "membebaniku",
+  "t": "Membebaniku",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "menemaniku",
+  "t": "Menemaniku",
+  "a": "Noah",
+  "k": "E"
+ },
+ {
+  "id": "menghapus-jejakmu",
+  "t": "Menghapus Jejakmu",
+  "a": "Peterpan",
+  "k": "C"
+ },
+ {
+  "id": "menunggu-pagi",
+  "t": "Menunggu Pagi",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "menunggumu",
+  "t": "Menunggumu",
+  "a": "Noah",
+  "k": "Em"
+ },
+ {
+  "id": "mimpi-yang-sempurna",
+  "t": "Mimpi Yang Sempurna",
+  "a": "Peterpan",
+  "k": "D"
+ },
+ {
+  "id": "moshimo-mata-itsuka-acoustic",
+  "t": "Moshimo Mata Itsuka Acoustic",
+  "a": "Noah",
+  "k": "A"
+ },
+ {
+  "id": "mungkin-nanti",
+  "t": "Mungkin Nanti",
+  "a": "Noah",
+  "k": "A"
+ },
+ {
   "id": "oh-susanna",
   "t": "Oh! Susanna",
   "a": "Stephen Foster",
+  "k": "C"
+ },
+ {
+  "id": "perih",
+  "t": "Perih",
+  "a": "Noah",
+  "k": "F"
+ },
+ {
+  "id": "sahabat",
+  "t": "Sahabat",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "sajadah-panjang",
+  "t": "Sajadah Panjang",
+  "a": "Noah",
+  "k": "Bm"
+ },
+ {
+  "id": "sally-sendiri",
+  "t": "Sally Sendiri",
+  "a": "Peterpan",
+  "k": "G"
+ },
+ {
+  "id": "satu-hati",
+  "t": "Satu Hati",
+  "a": "Peterpan",
   "k": "C"
  },
  {
@@ -48,15 +288,93 @@
   "k": "Dm"
  },
  {
+  "id": "semua-tentang-kita",
+  "t": "Semua Tentang Kita",
+  "a": "Peterpan",
+  "k": "C"
+ },
+ {
+  "id": "sendiri-lagi",
+  "t": "Sendiri Lagi",
+  "a": "Noah",
+  "k": "B"
+ },
+ {
+  "id": "separuh-aku",
+  "t": "Separuh Aku",
+  "a": "Noah",
+  "k": "Bm"
+ },
+ {
   "id": "silent-night",
   "t": "Silent Night",
   "a": "Franz Gruber & Joseph Mohr",
   "k": "C"
  },
  {
+  "id": "tak-ada-yang-abadi",
+  "t": "Tak Ada Yang Abadi",
+  "a": "Peterpan",
+  "k": "Am"
+ },
+ {
+  "id": "tak-bisakah",
+  "t": "Tak Bisakah",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "tak-lagi-sama",
+  "t": "Tak Lagi Sama",
+  "a": "Noah",
+  "k": "A"
+ },
+ {
+  "id": "taman-langit",
+  "t": "Taman Langit",
+  "a": "Peterpan",
+  "k": "Em"
+ },
+ {
+  "id": "terbangun-sendiri",
+  "t": "Terbangun Sendiri",
+  "a": "Noah",
+  "k": "D"
+ },
+ {
+  "id": "topeng",
+  "t": "Topeng",
+  "a": "Peterpan",
+  "k": "F"
+ },
+ {
+  "id": "walau-habis-terang",
+  "t": "Walau Habis Terang",
+  "a": "Peterpan",
+  "k": "D"
+ },
+ {
+  "id": "wanitaku",
+  "t": "Wanitaku",
+  "a": "Noah",
+  "k": "B"
+ },
+ {
   "id": "when-the-saints-go-marching-in",
   "t": "When the Saints Go Marching In",
   "a": "Tradisional (Spiritual)",
   "k": "C"
+ },
+ {
+  "id": "yang-terdalam",
+  "t": "Yang Terdalam",
+  "a": "Peterpan",
+  "k": "Cadd9"
+ },
+ {
+  "id": "yang-terlupakan",
+  "t": "Yang Terlupakan",
+  "a": "Noah",
+  "k": "D"
  }
 ]
