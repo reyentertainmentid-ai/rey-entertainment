@@ -210,11 +210,11 @@ header h1{white-space:nowrap}
   <input id="key" type="password" placeholder="Tempel API key di sini" autocomplete="off">
   <p style="margin:6px 0 0">Belum punya? Buat gratis di <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></p>
   <label for="model">Model</label>
-  <input id="model" list="models" placeholder="gemini-2.5-flash">
+  <input id="model" list="models" placeholder="gemini-3.8-flash">
   <datalist id="models">
-    <option value="gemini-2.5-flash">
-    <option value="gemini-2.5-flash-lite">
-    <option value="gemini-3-flash-preview">
+    <option value="gemini-3.8-flash">
+    <option value="gemini-3.5-flash-lite">
+    <option value="gemini-3.6-flash">
   </datalist>
   <p style="margin:6px 0 0">Kalau muncul error model tidak ditemukan, ganti dengan nama model lain dari AI Studio.</p>
   <div class="actions">
@@ -228,7 +228,7 @@ const ICON = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHL
 /* Alamat server perantara (Cloudflare Worker). Kalau diisi, REY AI bisa dipakai langsung
    tanpa key. Key milik pengguna di Pengaturan tetap dipakai kalau diisi. Contoh:
    const PROXY_URL = "https://rey-ai.namamu.workers.dev"; */
-const PROXY_URL = "https://rey-ai.radenjunaedi93.workers.dev";
+const PROXY_URL = "";
 const SYSTEM = "Kamu adalah REY AI, asisten AI serba guna yang paling jago soal coding. " +
   "Gaya bicaramu santai, ramah, dan to the point, pakai bahasa Indonesia kecuali pengguna memakai bahasa lain. " +
   "Kalau diminta kode, berikan kode lengkap yang siap dijalankan di blok kode, lalu jelaskan singkat. " +
@@ -282,6 +282,7 @@ $("list").addEventListener("click", e => {
 });
 
 /* ---------- jalur ke Gemini: key sendiri, atau lewat server perantara ---------- */
+function dest(){ return (!(store.get("rey_key")||"").trim() && PROXY_URL) ? PROXY_URL : "generativelanguage.googleapis.com"; }
 function needKey(){ return !(store.get("rey_key")||"").trim() && !PROXY_URL; }
 function callGemini(model, payload){
   const key = (store.get("rey_key")||"").trim();
@@ -314,7 +315,7 @@ async function send(){
   const text = $("input").value.trim();
   if(!text && !pending) return;
   if(needKey()){ $("dlg").showModal(); return; }
-  const model = (store.get("rey_model")||"gemini-2.5-flash").trim();
+  const model = (store.get("rey_model")||"gemini-3.8-flash").trim();
 
   const img = pending; pending = null; $("preview").style.display = "none"; $("file").value = "";
   $("input").value = ""; autosize();
@@ -333,10 +334,10 @@ async function send(){
     const j = await r.json().catch(() => ({}));
     if(!r.ok){
       const code = r.status, msg = j.error?.message || "";
-      let info = "Terjadi error ("+code+"). " + msg;
+      let info = "Terjadi error ("+code+"). " + msg + (msg ? "" : " [tujuan: " + dest() + "]");
       if(code === 400 && /key/i.test(msg)) info = "API key tidak valid. Cek lagi di Pengaturan.";
       else if(code === 403) info = "Akses ditolak. Pastikan API key benar dan aktif.";
-      else if(code === 404) info = "Model \""+model+"\" tidak ditemukan. Ganti nama model di Pengaturan.";
+      else if(code === 404) info = "Model \""+model+"\" tidak tersedia untuk key ini. Buka Pengaturan lalu coba model gemini-3.8-flash atau gemini-3.5-flash-lite.";
       else if(code === 429) info = "Jatah gratis sedang habis atau terlalu cepat. Tunggu sebentar lalu coba lagi." + (PROXY_URL ? " Atau isi key sendiri di Pengaturan." : "");
       else if(code === 413) info = "Berkas terlalu besar.";
       wait.classList.add("err"); wait.querySelector(".t").textContent = info;
@@ -381,13 +382,13 @@ $("pdel").addEventListener("click", () => { pending = null; $("file").value = ""
 
 $("openSet").addEventListener("click", () => {
   $("key").value = store.get("rey_key") || "";
-  $("model").value = store.get("rey_model") || "gemini-2.5-flash";
+  $("model").value = store.get("rey_model") || "gemini-3.8-flash";
   $("dlg").showModal();
 });
 $("cancel").addEventListener("click", () => $("dlg").close());
 $("save").addEventListener("click", () => {
   store.set("rey_key", $("key").value.trim());
-  store.set("rey_model", $("model").value.trim() || "gemini-2.5-flash");
+  store.set("rey_model", $("model").value.trim() || "gemini-3.8-flash");
   $("dlg").close();
 });
 $("newChat").addEventListener("click", () => {
@@ -493,10 +494,10 @@ function parseJSON(text){
 function sErr(code, msg, model){
   if(code === 400 && /key/i.test(msg)) return "API key tidak valid. Cek lagi di Pengaturan.";
   if(code === 403) return "Akses ditolak. " + (PROXY_URL ? "Server perantara menolak permintaan ini." : "Pastikan API key benar dan aktif.");
-  if(code === 404) return "Model \""+model+"\" tidak ditemukan. Ganti nama model di Pengaturan.";
+  if(code === 404) return "Model \""+model+"\" tidak tersedia untuk key ini. Buka Pengaturan lalu coba model gemini-3.8-flash atau gemini-3.5-flash-lite.";
   if(code === 413) return "Berkas terlalu besar. Kecilkan dulu lagunya.";
   if(code === 429) return "Jatah sedang habis atau terlalu sering. Tunggu sebentar lalu coba lagi." + (PROXY_URL ? " Atau isi key sendiri di Pengaturan." : "");
-  return "Terjadi error ("+code+"). " + msg;
+  return "Terjadi error ("+code+"). " + msg + (msg ? "" : " [tujuan: " + dest() + "]");
 }
 
 let sBusy = false;
@@ -507,7 +508,7 @@ $("sGo").addEventListener("click", async () => {
   const lyrics = $("sLyrics").value.trim(), note = $("sNote").value.trim();
   if(!genre){ sStatus("Tulis genre tujuannya dulu.", true); return; }
   if(!sAudio && !lyrics && !note){ sStatus("Unggah lagu, atau isi lirik atau catatan, supaya REY AI punya bahan.", true); return; }
-  const model = (store.get("rey_model")||"gemini-2.5-flash").trim();
+  const model = (store.get("rey_model")||"gemini-3.8-flash").trim();
   const parts = [{text: sPrompt(genre, $("sLang").value, note, lyrics, !!sAudio)}];
   if(sAudio) parts.push({inlineData:{mimeType:sAudio.mime, data:sAudio.data}});
   sBusy = true; $("sGo").disabled = true; $("sOut").innerHTML = "";
