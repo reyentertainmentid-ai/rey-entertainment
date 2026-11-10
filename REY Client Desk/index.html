@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0908">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex, nofollow">
+<title>REY Client Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap">
+<style>
+  :root {
+    --bg:#0a0908; --panel:#14110c; --panel-2:#1b160d; --line:#2f2713;
+    --gold:#d6ad4a; --gold-hi:#f4d67e; --gold-lo:#8a6a1e;
+    --fg:#f3ecda; --muted:#a09578; --ok:#5fe39a; --warn:#ff8a4c;
+    --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-disp: "Orbitron", ui-monospace, Consolas, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  [hidden] { display:none !important; }
+  html,body { margin:0; }
+  body {
+    background: radial-gradient(120% 40% at 50% 0%, #1a1408 0%, var(--bg) 60%) no-repeat, var(--bg);
+    color:var(--fg); font-family:var(--font-ui); font-size:16px; line-height:1.5;
+    padding-block: max(12px, env(safe-area-inset-top,0px)) max(40px, env(safe-area-inset-bottom,0px));
+    padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
+  }
+  .wrap { max-width:860px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  .wrap > *, #desk, #tarif { min-width:0; max-width:100%; }
+  #desk, #tarif { width:100%; }
+  .res { min-width:0; }
+  header { display:flex; align-items:center; gap:10px; }
+  .home { flex:none; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--panel-2); border:1.5px solid var(--gold-lo); color:var(--gold-hi); text-decoration:none; }
+  .home svg { width:18px; height:18px; }
+  h1 { margin:0; font-family:var(--font-disp); font-weight:900; font-size:17px; letter-spacing:.04em; background:linear-gradient(180deg,var(--gold-hi),var(--gold) 55%,var(--gold-lo)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub { color:var(--muted); font-size:13px; margin-left:auto; text-align:right; }
+  nav.tabs { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--panel); }
+  nav.tabs button { border:0; background:transparent; color:var(--muted); min-height:44px; font-weight:700; cursor:pointer; font:inherit; font-weight:700; }
+  nav.tabs button[aria-pressed="true"] { background:var(--gold); color:#1a1204; }
+  .card { background:linear-gradient(180deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:10px; min-width:0; }
+  .card h2 { margin:0; font-size:15px; letter-spacing:.06em; text-transform:uppercase; color:var(--gold-hi); display:flex; align-items:center; gap:8px; }
+  .card h2 .n { flex:none; width:24px; height:24px; border-radius:50%; background:var(--gold); color:#1a1204; font-size:13px; display:flex; align-items:center; justify-content:center; font-weight:800; letter-spacing:0; }
+  label { font-size:13px; color:var(--muted); display:block; margin-bottom:4px; }
+  input, textarea, select { width:100%; background:#0d0b07; color:var(--fg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font:inherit; min-width:0; }
+  textarea { min-height:130px; resize:vertical; line-height:1.45; }
+  input:focus, textarea:focus, select:focus { outline:2px solid var(--gold-lo); border-color:var(--gold-lo); }
+  button { font:inherit; color:inherit; }
+  .btn { min-height:44px; padding:0 16px; border-radius:12px; border:1px solid var(--gold-lo); background:var(--panel-2); color:var(--gold-hi); cursor:pointer; font-weight:700; }
+  .btn:hover { border-color:var(--gold-hi); }
+  .btn.primary { background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,var(--gold-lo)); color:#1a1204; border-color:var(--gold); }
+  .btn.small { min-height:34px; padding:0 12px; font-size:14px; }
+  .btn.danger { color:var(--warn); border-color:#6a3a22; }
+  .btn:disabled { opacity:.45; cursor:not-allowed; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .row > * { min-width:0; }
+  .grow { flex:1 1 200px; }
+  .steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; }
+  .steps .btn { text-align:left; display:flex; align-items:center; gap:8px; padding:0 12px; }
+  .steps .btn .n { flex:none; width:22px; height:22px; border-radius:50%; border:1.5px solid currentColor; font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .steps .btn.done .n { background:var(--ok); border-color:var(--ok); color:#06130b; }
+  .hint { color:var(--muted); font-size:13px; }
+  .hint.err { color:var(--warn); }
+  .res { display:flex; flex-direction:column; gap:10px; }
+  .res ul { margin:0; padding-left:20px; display:flex; flex-direction:column; gap:3px; }
+  .res h3 { margin:6px 0 2px; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--gold); }
+  .res p { margin:0; }
+  .tag { display:inline-block; border:1px solid var(--gold-lo); color:var(--gold-hi); border-radius:20px; padding:2px 10px; font-size:13px; }
+  .draft { background:#0d0b07; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:10px; padding:10px 12px; white-space:pre-wrap; word-break:break-word; font-size:15px; }
+  .tablewrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; }
+  table { border-collapse:collapse; width:100%; min-width:560px; font-size:14px; }
+  th, td { padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.06em; background:#0f0c07; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td input, td select { padding:6px 8px; border-radius:8px; }
+  .total { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:8px; }
+  .items { display:flex; flex-direction:column; gap:8px; }
+  .item { background:#0d0b07; border:1px solid var(--line); border-radius:12px; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
+  .ih { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .ig { display:grid; grid-template-columns:90px minmax(0,1fr) auto; gap:8px; align-items:end; }
+  .ig label { margin-bottom:3px; font-size:12px; }
+  .ip { text-align:right; } .ip b { display:block; font-size:16px; color:var(--gold-hi); font-variant-numeric:tabular-nums; white-space:nowrap; min-height:38px; line-height:38px; }
+  @media (max-width:480px) { .ig { grid-template-columns:80px minmax(0,1fr); } .ip { grid-column:1 / -1; text-align:left; } .ip b { min-height:0; line-height:1.3; } }
+  .tot { background:#0d0b07; border:1px solid var(--line); border-radius:12px; padding:10px 12px; }
+  .tot b { display:block; font-size:20px; color:var(--gold-hi); font-variant-numeric:tabular-nums; }
+  .tot.floor b { color:var(--warn); }
+  .tot span { color:var(--muted); font-size:12px; }
+  .opt { border:1px solid var(--line); border-radius:12px; padding:10px 12px; display:flex; flex-direction:column; gap:8px; background:#0d0b07; }
+  .opt .head { display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+  .opt .warn { color:var(--warn); font-size:13px; }
+  .loading { display:flex; align-items:center; gap:10px; color:var(--gold-hi); }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--gold); animation:b 1s infinite ease-in-out; }
+  .dot:nth-child(2){animation-delay:.15s} .dot:nth-child(3){animation-delay:.3s}
+  @keyframes b { 0%,80%,100%{opacity:.25;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+  .foot { color:var(--muted); font-size:12px; text-align:center; }
+  button:focus-visible, a:focus-visible { outline:3px solid var(--gold-hi); outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce) { .dot { animation:none; } }
+  @media (max-width:480px) { .sub { display:none; } h1 { font-size:15px; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <a class="home" href="../" aria-label="Kembali ke beranda REY Entertainment" title="Beranda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg>
+    </a>
+    <h1>REY Client Desk</h1>
+    <span class="sub">Asisten untuk melayani client</span>
+  </header>
+
+  <nav class="tabs" aria-label="Menu">
+    <button id="tDesk" aria-pressed="true">Meja Client</button>
+    <button id="tTarif" aria-pressed="false">Tarif &amp; Aturan</button>
+  </nav>
+
+  <!-- ================= MEJA CLIENT ================= -->
+  <section id="desk" class="wrap" style="gap:14px">
+    <div class="card">
+      <div class="row">
+        <div class="grow"><label for="caseSel">Kasus</label><select id="caseSel"></select></div>
+        <div class="grow"><label for="caseName">Nama kasus</label><input id="caseName" placeholder="Contoh: Toko Bu Ani, website"></div>
+      </div>
+      <div class="row">
+        <button class="btn small" id="newCase">+ Kasus baru</button>
+        <button class="btn small danger" id="delCase">Hapus kasus ini</button>
+        <span class="hint" id="saveHint">Tersimpan otomatis di browser ini.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Percakapan dengan client</h2>
+      <div>
+        <label for="msg">Tempel pesan atau seluruh percakapan (WhatsApp, email). Boleh ditambah terus.</label>
+        <textarea id="msg" placeholder="Contoh: Halo kak, saya mau bikin website buat usaha katering saya. Berapa ya biayanya?"></textarea>
+      </div>
+      <div>
+        <label for="notes">Catatan dari saya (opsional, client tidak melihat ini)</label>
+        <input id="notes" placeholder="Contoh: client baru dari teman, budget sepertinya kecil, butuh cepat">
+      </div>
+      <div class="hint">Jangan tempel data sensitif (kata sandi, nomor KTP, rekening). Teks dikirim ke layanan AI untuk diproses.</div>
+    </div>
+
+    <div class="card">
+      <h2>Langkah</h2>
+      <div class="steps" id="steps">
+        <button class="btn" data-step="ana"><span class="n">1</span>Analisis &amp; pertanyaan</button>
+        <button class="btn" data-step="sum"><span class="n">2</span>Ringkasan kebutuhan</button>
+        <button class="btn" data-step="est"><span class="n">3</span>Estimasi harga</button>
+        <button class="btn" data-step="pen"><span class="n">4</span>Draf penawaran</button>
+        <button class="btn" data-step="neg"><span class="n">5</span>Negosiasi</button>
+      </div>
+      <div class="hint" id="stepHint">Mulai dari langkah 1. Urutannya boleh dilompati.</div>
+      <div id="busy" class="loading" hidden><span class="dot"></span><span class="dot"></span><span class="dot"></span><span id="busyTxt">Sedang diproses…</span></div>
+      <div id="err" class="hint err" hidden></div>
+    </div>
+
+    <div id="outAna" class="card" hidden></div>
+    <div id="outSum" class="card" hidden></div>
+    <div id="outEst" class="card" hidden></div>
+    <div id="outPen" class="card" hidden></div>
+    <div id="outNeg" class="card" hidden></div>
+  </section>
+
+  <!-- ================= TARIF ================= -->
+  <section id="tarif" class="wrap" style="gap:14px" hidden>
+    <div class="card">
+      <h2>Tentang kamu</h2>
+      <div class="grid2">
+        <div><label for="sName">Nama yang dipakai di pesan</label><input id="sName" placeholder="Contoh: Rey dari REY Entertainment"></div>
+        <div><label for="sDp">DP (% dari total)</label><input id="sDp" type="number" min="0" max="100" inputmode="numeric"></div>
+        <div><label for="sExp">Tambahan biaya kerja cepat (%)</label><input id="sExp" type="number" min="0" max="200" inputmode="numeric"></div>
+        <div><label for="sRev">Revisi gratis (kali)</label><input id="sRev" type="number" min="0" max="20" inputmode="numeric"></div>
+        <div><label for="sValid">Penawaran berlaku (hari)</label><input id="sValid" type="number" min="1" max="60" inputmode="numeric"></div>
+      </div>
+      <div class="hint">Semua ini tersimpan hanya di browser ini, tidak ikut ke GitHub.</div>
+    </div>
+
+    <div class="card">
+      <h2>Daftar tarif (Rupiah)</h2>
+      <div class="hint">Ini angka awal sebagai patokan, bukan harga baku. Sesuaikan dengan kemampuan, kota, dan targetmu. Harga komponen (sensor, board, dan sebagainya) dianggap dibayar client terpisah dari tarif jasa.</div>
+      <div class="tablewrap"><table id="tTable"></table></div>
+      <div class="row">
+        <button class="btn small" id="addRow">+ Tambah tarif</button>
+        <button class="btn small danger" id="resetTarif">Kembalikan ke angka awal</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">REY Client Desk · halaman pribadi, tidak ditampilkan di portal · estimasi dari AI hanya bahan pertimbangan, keputusan harga ada padamu</div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Pengaturan server ----------
+  var PROXY_URL = "https://rey-ai.radenjunaedi93.workers.dev";
+  var MODEL = "gemini-3.8-flash";
+  var KEY = "rey-desk-v1";
+
+  var DEFAULT_TARIF = [
+    { id: "web-landing",  nama: "Website landing page (1 halaman)",                  min: 1000000,  max: 2500000,  satuan: "proyek",  catatan: "Satu halaman promosi, tampil rapi di HP." },
+    { id: "web-profile",  nama: "Website company profile (3 sampai 7 halaman)",      min: 2500000,  max: 6000000,  satuan: "proyek",  catatan: "Profil usaha, layanan, kontak, galeri." },
+    { id: "web-toko",     nama: "Website toko online / katalog + pesan lewat WA",    min: 5000000,  max: 15000000, satuan: "proyek",  catatan: "Katalog produk, keranjang atau tombol pesan." },
+    { id: "web-app",      nama: "Aplikasi web custom (login, database, dashboard)",  min: 8000000,  max: 30000000, satuan: "proyek",  catatan: "Sistem yang dibuat sesuai alur kerja client." },
+    { id: "web-halaman",  nama: "Halaman tambahan website",                          min: 300000,   max: 800000,   satuan: "halaman", catatan: "" },
+    { id: "and-simple",   nama: "Aplikasi Android sederhana (tanpa server)",         min: 5000000,  max: 15000000, satuan: "proyek",  catatan: "Beberapa layar, data di perangkat." },
+    { id: "and-mid",      nama: "Aplikasi Android menengah (login, server, notif)",  min: 15000000, max: 50000000, satuan: "proyek",  catatan: "Butuh server/API dan akun pengguna." },
+    { id: "desk-simple",  nama: "Aplikasi desktop sederhana",                        min: 3000000,  max: 10000000, satuan: "proyek",  catatan: "" },
+    { id: "mcu-simple",   nama: "Mikrokontroler sederhana (1–2 sensor/aktuator)",    min: 500000,   max: 2000000,  satuan: "proyek",  catatan: "Program dan rakit, tanpa jaringan. Komponen terpisah." },
+    { id: "mcu-iot",      nama: "Mikrokontroler IoT (WiFi/Bluetooth + dashboard)",   min: 2500000,  max: 8000000,  satuan: "proyek",  catatan: "Data terkirim ke web atau aplikasi." },
+    { id: "mcu-complex",  nama: "Mikrokontroler kompleks (banyak sensor + aplikasi)", min: 6000000,  max: 20000000, satuan: "proyek",  catatan: "Kontrol banyak perangkat dan aplikasi pendamping." },
+    { id: "mcu-pcb",      nama: "Desain PCB atau casing alat",                       min: 500000,   max: 2500000,  satuan: "desain",  catatan: "Biaya cetak dan bahan terpisah." },
+    { id: "ui-design",    nama: "Desain logo / tampilan (paket)",                    min: 300000,   max: 1500000,  satuan: "paket",   catatan: "" },
+    { id: "revisi",       nama: "Revisi tambahan di luar paket",                     min: 150000,   max: 500000,   satuan: "putaran", catatan: "" },
+    { id: "hosting",      nama: "Setup domain dan hosting (jasa)",                   min: 300000,   max: 800000,   satuan: "proyek",  catatan: "Biaya domain dan hosting dibayar client terpisah." },
+    { id: "maintenance",  nama: "Perawatan bulanan",                                 min: 200000,   max: 800000,   satuan: "bulan",   catatan: "Perbaikan kecil dan pemantauan." },
+    { id: "training",     nama: "Pelatihan pemakaian",                               min: 150000,   max: 400000,   satuan: "sesi",    catatan: "" }
+  ];
+  var DEFAULT_SET = { nama: "", dp: 50, exp: 30, rev: 2, valid: 7 };
+
+  // ---------- Data ----------
+  var db = { settings: clone(DEFAULT_SET), tarif: clone(DEFAULT_TARIF), cases: [], cur: null };
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (s) {
+        if (s.settings) db.settings = Object.assign(clone(DEFAULT_SET), s.settings);
+        if (Array.isArray(s.tarif) && s.tarif.length) db.tarif = s.tarif;
+        if (Array.isArray(s.cases)) db.cases = s.cases;
+        db.cur = s.cur || null;
+      }
+    } catch (e) {}
+    if (!db.cases.length) newCase(true);
+    if (!db.cases.some(function (c) { return c.id === db.cur; })) db.cur = db.cases[0].id;
+  }
+  var saveTimer = 0;
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(db)); $("saveHint").textContent = "Tersimpan otomatis di browser ini."; }
+    catch (e) { $("saveHint").textContent = "Tidak bisa menyimpan di browser ini (mode privat?). Data hilang kalau halaman ditutup."; }
+  }
+  function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
+  function newCase(silent) {
+    var c = { id: "k" + Date.now().toString(36) + Math.floor(Math.random() * 99), name: "", created: Date.now(), msg: "", notes: "", ana: null, sum: null, est: null, pen: null, neg: null, negMsg: "" };
+    db.cases.unshift(c); db.cur = c.id;
+    if (!silent) { save(); renderAll(); }
+    return c;
+  }
+  function cur() { return db.cases.filter(function (c) { return c.id === db.cur; })[0]; }
+
+  // ---------- Helpers ----------
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function rp(n) { return "Rp " + Math.round(n || 0).toLocaleString("id-ID"); }
+  function num(v, d) { var n = parseFloat(String(v).replace(/[^\d.\-]/g, "")); return isFinite(n) ? n : (d || 0); }
+  function list(a) { return (a && a.length) ? "<ul>" + a.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : '<p class="hint">Tidak ada.</p>'; }
+  function arr(x) { return Array.isArray(x) ? x.filter(function (v) { return v != null && String(v).trim(); }).map(String) : []; }
+  function tarifById(id) { return db.tarif.filter(function (t) { return t.id === id; })[0]; }
+  function copyText(text, btn) {
+    var done = function () { if (btn) { var o = btn.textContent; btn.textContent = "Tersalin"; setTimeout(function () { btn.textContent = o; }, 1400); } };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+    } else fallback();
+    function fallback() {
+      var t = document.createElement("textarea"); t.value = text; t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select();
+      try { document.execCommand("copy"); done(); } catch (e) { if (btn) btn.textContent = "Salin manual"; }
+      document.body.removeChild(t);
+    }
+  }
+
+  // ---------- Panggil AI ----------
+  var SYSTEM = [
+    "Kamu adalah asisten pribadi untuk pemilik jasa pembuatan aplikasi, website, dan proyek mikrokontroler (REY Entertainment).",
+    "Kamu membantu PEMILIK jasa (bukan client) menanggapi calon client sampai tercapai kesepakatan harga.",
+    "Aturan:",
+    "- Tulis dalam bahasa Indonesia yang sopan, hangat, dan tidak kaku, cocok untuk WhatsApp. Jangan terlalu panjang.",
+    "- Jangan mengarang fakta tentang client. Kalau informasi belum ada, tulis sebagai pertanyaan atau asumsi.",
+    "- Harga selalu disebut sebagai estimasi, bukan harga final. Jangan menjanjikan hal yang tidak pasti (jadwal, hasil, performa).",
+    "- Harga komponen hardware (sensor, board, kabel, dan sebagainya) dan biaya domain/hosting dibayar client terpisah dari jasa, kecuali dinyatakan lain.",
+    "- Pertanyaan ke client maksimal 7 buah, urut dari yang paling penting, satu pertanyaan satu hal.",
+    "- Jawab HANYA dengan JSON yang valid sesuai format yang diminta, tanpa teks di luar JSON."
+  ].join("\n");
+
+  function callAI(task, userText) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 75000);
+    var body = {
+      systemInstruction: { parts: [{ text: SYSTEM }] },
+      contents: [{ role: "user", parts: [{ text: userText }] }],
+      generationConfig: { responseMimeType: "application/json", temperature: 0.4 }
+    };
+    return fetch(PROXY_URL.replace(/\/+$/, "") + "/?model=" + encodeURIComponent(MODEL), {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctrl.signal
+    }).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null; try { j = JSON.parse(t); } catch (e) {}
+        if (!r.ok) throw { code: r.status, msg: j && j.error && j.error.message };
+        return j;
+      });
+    }).then(function (j) {
+      var parts = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts;
+      var text = (parts || []).map(function (p) { return p.text || ""; }).join("").trim();
+      if (!text) throw { code: "kosong" };
+      text = text.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
+      try { return JSON.parse(text); } catch (e) { throw { code: "format" }; }
+    }).then(function (v) { clearTimeout(timer); return v; }, function (e) { clearTimeout(timer); throw e; });
+  }
+  function errText(e) {
+    if (e && e.name === "AbortError") return "Terlalu lama menunggu jawaban. Coba lagi sebentar lagi.";
+    var c = e && e.code;
+    if (c === 429) return "Jatah sedang habis atau terlalu cepat. Tunggu sebentar lalu coba lagi.";
+    if (c === 403) return "Server perantara menolak permintaan ini (cek ALLOWED_ORIGINS di Cloudflare).";
+    if (c === 404) return "Model AI tidak ditemukan. Perlu mengganti nama model di kode halaman ini.";
+    if (c === 413) return "Teks terlalu panjang. Potong percakapan lama yang sudah tidak perlu.";
+    if (c === 503) return "Layanan sedang dimatikan sementara.";
+    if (c === "kosong") return "AI tidak memberi jawaban. Coba lagi.";
+    if (c === "format") return "Jawaban AI tidak bisa dibaca. Coba tekan tombolnya sekali lagi.";
+    if (typeof c === "number") return "Terjadi error (" + c + ")." + (e.msg ? " " + e.msg : "");
+    return "Tidak bisa menghubungi server. Periksa koneksi internet.";
+  }
+
+  // ---------- Prompt ----------
+  function ctxBlock(c) {
+    var s = db.settings;
+    return "PERCAKAPAN DENGAN CLIENT:\n\"\"\"\n" + c.msg.trim() + "\n\"\"\"\n" +
+      (c.notes.trim() ? "CATATAN PEMILIK (rahasia, jangan disebut ke client): " + c.notes.trim() + "\n" : "") +
+      (s.nama.trim() ? "Nama pemilik untuk tanda tangan pesan: " + s.nama.trim() + "\n" : "");
+  }
+  function tarifBlock() {
+    return db.tarif.map(function (t) {
+      return t.id + " | " + t.nama + " | " + rp(t.min) + " sampai " + rp(t.max) + " per " + (t.satuan || "unit") + (t.catatan ? " | " + t.catatan : "");
+    }).join("\n");
+  }
+  function estLines(c) {
+    var e = c.est, out = [];
+    e.items.forEach(function (it) {
+      var t = tarifById(it.id); if (!t) return;
+      out.push("- " + t.nama + " x" + it.qty + " (" + (t.satuan || "unit") + "): " + rp(linePrice(it)));
+    });
+    return out.join("\n");
+  }
+
+  var PROMPTS = {
+    ana: function (c) {
+      return ctxBlock(c) + "\nTugas: analisis percakapan ini untuk pemilik jasa.\nFormat JSON:\n" +
+        '{"jenis":"perkiraan jenis pekerjaan, satu kalimat","jelas":["hal yang sudah jelas"],"belum":["hal penting yang belum jelas"],"risiko":["hal yang perlu diwaspadai: lingkup melebar, budget tidak cocok, hardware, dan sebagainya"],"balasan":"draf balasan WhatsApp siap kirim berisi sapaan singkat dan pertanyaan lanjutan bernomor (maks 7), hanya tanya yang belum jelas"}';
+    },
+    sum: function (c) {
+      return ctxBlock(c) + "\nTugas: buat ringkasan kebutuhan proyek yang bisa dikirim ke client untuk dikonfirmasi. Pisahkan jelas yang sudah pasti dan asumsi.\nFormat JSON:\n" +
+        '{"judul":"nama proyek","tujuan":"tujuan proyek","pengguna":"siapa pengguna","platform":"web/Android/desktop/perangkat","fitur_wajib":["..."],"fitur_tambahan":["fitur yang disebut tapi belum wajib"],"perangkat_keras":["jika ada mikrokontroler: sensor, aktuator, konektivitas, daya; kosongkan jika tidak ada"],"di_luar_lingkup":["hal yang tidak termasuk"],"asumsi":["asumsi yang dipakai karena info belum ada"],"yang_perlu_dikonfirmasi":["pertanyaan terbuka"]}';
+    },
+    est: function (c) {
+      return ctxBlock(c) + "\nDAFTAR TARIF PEMILIK (id | nama | rentang | satuan):\n" + tarifBlock() +
+        "\n\nTugas: pilih item tarif yang diperlukan untuk proyek ini. Pilih seperlunya saja, jangan menambah item yang tidak dibutuhkan. Gunakan HANYA id dari daftar. Isi level: \"min\" bila lingkup kecil dan jelas, \"mid\" bila sedang, \"max\" bila rumit, belum jelas, atau mendesak. Jangan menghitung total (itu dihitung terpisah).\nFormat JSON:\n" +
+        '{"items":[{"id":"id tarif","qty":1,"level":"min|mid|max","alasan":"alasan singkat"}],"jadwal":"perkiraan lama pengerjaan, misalnya 2 sampai 3 minggu","asumsi":["asumsi yang dipakai"],"belum_pasti":["hal yang bisa mengubah harga"],"catatan_hardware":"catatan komponen hardware yang dibayar client, atau kosong"}';
+    },
+    pen: function (c) {
+      var s = db.settings, tot = totals(c.est);
+      return ctxBlock(c) + "\nRINCIAN ESTIMASI (sudah dihitung, pakai angka ini apa adanya):\n" + estLines(c) +
+        "\nTotal estimasi: " + rp(tot.recommended) + (c.est.express ? " (sudah termasuk tambahan kerja cepat " + s.exp + "%)" : "") +
+        "\nDP: " + s.dp + "% = " + rp(tot.dp) + ", pelunasan " + rp(tot.recommended - tot.dp) + " saat selesai" +
+        "\nPerkiraan pengerjaan: " + (c.est.jadwal || "menyesuaikan") +
+        "\nRevisi gratis: " + s.rev + " kali. Penawaran berlaku " + s.valid + " hari." +
+        (c.est.catatan_hardware ? "\nCatatan hardware: " + c.est.catatan_hardware : "") +
+        "\nAsumsi: " + (arr(c.est.asumsi).join("; ") || "-") +
+        "\n\nTugas: tulis draf penawaran yang ramah dan jelas untuk client. Sebut ruang lingkup singkat, harga (sebagai estimasi), termin DP dan pelunasan, perkiraan waktu, jumlah revisi, masa berlaku, dan apa yang tidak termasuk (hardware, domain/hosting). Akhiri dengan ajakan untuk lanjut atau bertanya.\nFormat JSON:\n" +
+        '{"whatsapp":"versi WhatsApp, ringkas, boleh pakai *tebal* gaya WhatsApp","email_subjek":"subjek email","email_isi":"versi email lebih formal dan lengkap"}';
+    },
+    neg: function (c) {
+      var s = db.settings, tot = totals(c.est);
+      return ctxBlock(c) + "\nBALASAN / PERMINTAAN CLIENT TERBARU (soal harga):\n\"\"\"\n" + c.negMsg.trim() + "\n\"\"\"\n" +
+        "\nRINCIAN ESTIMASI SAAT INI:\n" + estLines(c) +
+        "\nHarga yang ditawarkan: " + rp(tot.recommended) + "\nBATAS HARGA TERENDAH pemilik: " + rp(tot.floor) +
+        "\nTugas: bantu pemilik menanggapi. Beri 3 opsi balasan yang berbeda arah: (1) tahan harga dengan menjelaskan nilai, (2) kurangi ruang lingkup agar cocok budget (sebutkan fitur apa yang dikurangi), (3) bertahap atau diskon terbatas. Setiap opsi punya harga akhir yang ditawarkan (angka Rupiah penuh) dan TIDAK BOLEH di bawah batas harga terendah. Jika tidak ada angka, isi null. Balasan harus sopan, tidak memohon-mohon, dan tidak berjanji berlebihan.\nFormat JSON:\n" +
+        '{"maksud_client":"apa sebenarnya yang diminta client, satu atau dua kalimat","opsi":[{"nama":"label singkat","harga":0,"balasan":"draf balasan WhatsApp siap kirim","catatan":"untung rugi opsi ini bagi pemilik"}]}';
+    }
+  };
+
+  // ---------- Hitung ----------
+  function levelPrice(t, level) {
+    if (level === "max") return t.max;
+    if (level === "mid") return Math.round(((t.min + t.max) / 2) / 50000) * 50000;
+    return t.min;
+  }
+  function linePrice(it) { var t = tarifById(it.id); return t ? levelPrice(t, it.level) * it.qty : 0; }
+  function totals(e) {
+    var mn = 0, mx = 0, rec = 0;
+    e.items.forEach(function (it) {
+      var t = tarifById(it.id); if (!t) return;
+      mn += t.min * it.qty; mx += t.max * it.qty; rec += linePrice(it);
+    });
+    var f = e.express ? 1 + db.settings.exp / 100 : 1;
+    var recommended = Math.round(rec * f / 10000) * 10000;
+    var floor = Math.round(mn * f / 10000) * 10000;
+    return { min: mn * f, max: mx * f, recommended: recommended, floor: floor, dp: Math.round(recommended * db.settings.dp / 100 / 10000) * 10000 };
+  }
+
+  // ---------- Render ----------
+  var SECTION = { ana: "outAna", sum: "outSum", est: "outEst", pen: "outPen", neg: "outNeg" };
+  function renderAll() {
+    var c = cur();
+    // pilihan kasus
+    var sel = $("caseSel"); sel.innerHTML = "";
+    db.cases.forEach(function (k) {
+      var o = document.createElement("option"); o.value = k.id;
+      o.textContent = (k.name || firstWords(k.msg) || "Kasus tanpa nama") + " · " + new Date(k.created).toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+      if (k.id === db.cur) o.selected = true; sel.appendChild(o);
+    });
+    $("caseName").value = c.name; $("msg").value = c.msg; $("notes").value = c.notes;
+    renderOut("ana"); renderOut("sum"); renderOut("est"); renderOut("pen"); renderOut("neg");
+    markSteps(); showErr("");
+  }
+  function firstWords(s) { s = (s || "").trim().replace(/\s+/g, " "); return s.length > 34 ? s.slice(0, 34) + "…" : s; }
+  function markSteps() {
+    var c = cur();
+    document.querySelectorAll("#steps .btn").forEach(function (b) {
+      var k = b.dataset.step;
+      b.classList.toggle("done", k === "neg" ? !!(c.neg && c.neg.opsi && c.neg.opsi.length) : !!c[k]);
+    });
+  }
+  function showErr(t) { var e = $("err"); e.textContent = t || ""; e.hidden = !t; }
+  function setBusy(on, label) { $("busy").hidden = !on; $("busyTxt").textContent = label || "Sedang diproses…"; document.querySelectorAll("#steps .btn").forEach(function (b) { b.disabled = on; }); }
+
+  function copyBtn(id, label) { return '<button class="btn small" data-copy="' + id + '">' + (label || "Salin") + "</button>"; }
+  var copyStore = {};
+  function reg(text) { var id = "c" + Object.keys(copyStore).length; copyStore[id] = text; return id; }
+
+  function renderOut(k) {
+    var c = cur(), box = $(SECTION[k]), d = c[k];
+    if (k === "neg") { if (!c.est) { box.hidden = true; box.innerHTML = ""; return; } d = c.neg || {}; }
+    else if (!d) { box.hidden = true; box.innerHTML = ""; return; }
+    box.hidden = false; var h = "";
+    if (k === "ana") {
+      h = '<h2><span class="n">1</span>Analisis &amp; pertanyaan</h2><div class="res">' +
+        '<p><span class="tag">' + esc(d.jenis || "Jenis belum jelas") + "</span></p>" +
+        "<h3>Sudah jelas</h3>" + list(arr(d.jelas)) + "<h3>Belum jelas</h3>" + list(arr(d.belum)) + "<h3>Perlu diwaspadai</h3>" + list(arr(d.risiko)) +
+        "<h3>Draf balasan ke client</h3>" + '<div class="draft">' + esc(d.balasan || "") + "</div>" +
+        '<div class="row">' + copyBtn(reg(d.balasan || ""), "Salin balasan") + "</div></div>";
+    } else if (k === "sum") {
+      var txt = sumText(d);
+      h = '<h2><span class="n">2</span>Ringkasan kebutuhan</h2><div class="res">' +
+        "<p><b>" + esc(d.judul || "") + "</b></p>" +
+        "<h3>Tujuan</h3><p>" + esc(d.tujuan || "-") + "</p><h3>Pengguna</h3><p>" + esc(d.pengguna || "-") + "</p><h3>Platform</h3><p>" + esc(d.platform || "-") + "</p>" +
+        "<h3>Fitur wajib</h3>" + list(arr(d.fitur_wajib)) + "<h3>Fitur tambahan</h3>" + list(arr(d.fitur_tambahan)) +
+        (arr(d.perangkat_keras).length ? "<h3>Perangkat keras</h3>" + list(arr(d.perangkat_keras)) : "") +
+        "<h3>Di luar lingkup</h3>" + list(arr(d.di_luar_lingkup)) + "<h3>Asumsi</h3>" + list(arr(d.asumsi)) + "<h3>Perlu dikonfirmasi</h3>" + list(arr(d.yang_perlu_dikonfirmasi)) +
+        '<div class="row">' + copyBtn(reg(txt), "Salin ringkasan (untuk client)") + "</div></div>";
+    } else if (k === "est") {
+      h = '<h2><span class="n">3</span>Estimasi harga</h2><div class="res">' + estTable(c) + "</div>";
+    } else if (k === "pen") {
+      h = '<h2><span class="n">4</span>Draf penawaran</h2><div class="res">' +
+        "<h3>Versi WhatsApp</h3>" + '<div class="draft">' + esc(d.whatsapp || "") + "</div>" + '<div class="row">' + copyBtn(reg(d.whatsapp || ""), "Salin WhatsApp") + "</div>" +
+        "<h3>Versi email</h3>" + '<p class="hint">Subjek: ' + esc(d.email_subjek || "") + "</p>" + '<div class="draft">' + esc(d.email_isi || "") + "</div>" +
+        '<div class="row">' + copyBtn(reg(d.email_isi || ""), "Salin isi email") + copyBtn(reg(d.email_subjek || ""), "Salin subjek") + "</div></div>";
+    } else if (k === "neg") {
+      var floor = c.est ? totals(c.est).floor : 0;
+      h = '<h2><span class="n">5</span>Negosiasi</h2><div class="res">' +
+        '<div><label for="negMsg">Balasan atau permintaan client (misalnya minta diskon)</label><textarea id="negMsg" style="min-height:90px">' + esc(c.negMsg) + "</textarea></div>" +
+        '<div class="row"><button class="btn primary small" id="negGo">Buat opsi balasan</button></div>' +
+        (d.opsi ? "<h3>Maksud client</h3><p>" + esc(d.maksud_client || "") + "</p>" +
+          d.opsi.map(function (o) {
+            var hg = o.harga == null ? null : num(o.harga, null);
+            var low = hg != null && hg > 0 && hg < floor;
+            return '<div class="opt"><div class="head"><b>' + esc(o.nama || "Opsi") + "</b>" + (hg ? '<span class="tag">' + rp(hg) + "</span>" : "") + "</div>" +
+              (low ? '<div class="warn">Di bawah batas harga terendahmu (' + rp(floor) + "). Pertimbangkan lagi sebelum dikirim.</div>" : "") +
+              '<div class="draft">' + esc(o.balasan || "") + "</div>" +
+              (o.catatan ? '<div class="hint">Untuk kamu: ' + esc(o.catatan) + "</div>" : "") +
+              '<div class="row">' + copyBtn(reg(o.balasan || ""), "Salin balasan") + "</div></div>";
+          }).join("") : '<p class="hint">Tempel balasan client di atas, lalu tekan tombolnya.</p>') + "</div>";
+    }
+    box.innerHTML = h;
+  }
+  function sumText(d) {
+    var L = function (t, a) { a = arr(a); return a.length ? "\n*" + t + "*\n" + a.map(function (x) { return "- " + x; }).join("\n") + "\n" : ""; };
+    return "*Ringkasan kebutuhan: " + (d.judul || "") + "*\n\nTujuan: " + (d.tujuan || "-") + "\nPengguna: " + (d.pengguna || "-") + "\nPlatform: " + (d.platform || "-") + "\n" +
+      L("Fitur utama", d.fitur_wajib) + L("Fitur tambahan", d.fitur_tambahan) + L("Perangkat keras", d.perangkat_keras) + L("Tidak termasuk", d.di_luar_lingkup) + L("Asumsi kami", d.asumsi) + L("Mohon dikonfirmasi", d.yang_perlu_dikonfirmasi);
+  }
+
+  function estTable(c) {
+    var e = c.est, t = totals(e);
+    var rows = e.items.map(function (it, i) {
+      var tr = tarifById(it.id);
+      if (!tr) return "";
+      return '<div class="item"><div class="ih"><div><b>' + esc(tr.nama) + "</b>" + (it.alasan ? '<div class="hint">' + esc(it.alasan) + "</div>" : "") + '</div><button class="btn small danger" data-del="' + i + '" aria-label="Hapus baris">×</button></div>' +
+        '<div class="ig"><div><label>Jumlah (' + esc(tr.satuan || "unit") + ')</label><input class="q" type="number" min="0" step="1" inputmode="numeric" value="' + it.qty + '" data-i="' + i + '" data-f="qty"></div>' +
+        '<div><label>Level harga</label><select data-i="' + i + '" data-f="level"><option value="min"' + (it.level === "min" ? " selected" : "") + ">Rendah · " + rp(tr.min) + '</option><option value="mid"' + (it.level === "mid" ? " selected" : "") + ">Sedang · " + rp(levelPrice(tr, "mid")) + '</option><option value="max"' + (it.level === "max" ? " selected" : "") + ">Tinggi · " + rp(tr.max) + "</option></select></div>" +
+        '<div class="ip"><label>Harga</label><b data-price="' + i + '">' + rp(linePrice(it)) + "</b></div></div></div>";
+    }).join("");
+    var addOpts = db.tarif.map(function (x) { return '<option value="' + esc(x.id) + '">' + esc(x.nama) + "</option>"; }).join("");
+    return '<div class="items">' + rows + "</div>" +
+      '<div class="row"><div class="grow"><select id="addItem" aria-label="Tambah pekerjaan"><option value="">+ Tambah pekerjaan dari daftar tarif…</option>' + addOpts + "</select></div>" +
+      '<label style="display:flex;gap:8px;align-items:center;margin:0;color:var(--fg)"><input type="checkbox" id="express" style="width:20px;height:20px"' + (e.express ? " checked" : "") + '> Kerja cepat (+' + db.settings.exp + "%)</label></div>" +
+      '<div class="total"><div class="tot"><span>Harga yang disarankan</span><b>' + rp(t.recommended) + '</b></div><div class="tot"><span>DP ' + db.settings.dp + '%</span><b>' + rp(t.dp) + '</b></div><div class="tot"><span>Rentang tarifmu</span><b style="font-size:15px">' + rp(t.min) + " – " + rp(t.max) + '</b></div><div class="tot floor"><span>Batas terendah (jangan turun dari ini)</span><b>' + rp(t.floor) + "</b></div></div>" +
+      '<h3>Perkiraan waktu</h3><p>' + esc(e.jadwal || "-") + "</p><h3>Asumsi</h3>" + list(arr(e.asumsi)) + "<h3>Bisa mengubah harga</h3>" + list(arr(e.belum_pasti)) +
+      (e.catatan_hardware ? "<h3>Hardware</h3><p>" + esc(e.catatan_hardware) + "</p>" : "") +
+      '<p class="hint">Angka dihitung oleh program dari daftar tarifmu, bukan oleh AI. Jumlah dan level bisa kamu ubah, total ikut berubah.</p>';
+  }
+
+  // ---------- Aksi langkah ----------
+  var STEP_LABEL = { ana: "Menganalisis percakapan…", sum: "Menyusun ringkasan…", est: "Menghitung estimasi…", pen: "Menulis draf penawaran…", neg: "Menyusun opsi balasan…" };
+  function run(step) {
+    var c = cur();
+    showErr("");
+    if (!$("busy").hidden) return;
+    if (step !== "neg" && !c.msg.trim()) { showErr("Tempel dulu pesan atau percakapan dengan client."); return; }
+    if ((step === "pen" || step === "neg") && !(c.est && c.est.items && c.est.items.length)) { showErr("Buat dulu estimasi harga (langkah 3)."); return; }
+    if (step === "neg") {
+      var nm = $("negMsg") ? $("negMsg").value : c.negMsg;
+      c.negMsg = nm;
+      if (!nm.trim()) { showErr("Tempel dulu balasan atau permintaan client soal harga."); return; }
+    }
+    setBusy(true, STEP_LABEL[step]);
+    callAI(step, PROMPTS[step](c)).then(function (r) {
+      if (step === "est") {
+        var items = (r.items || []).map(function (it) {
+          var q = Math.max(0, Math.round(num(it.qty, 1)));
+          return { id: String(it.id || ""), qty: q || 1, level: ["min", "mid", "max"].indexOf(it.level) >= 0 ? it.level : "mid", alasan: it.alasan || "" };
+        }).filter(function (it) { return tarifById(it.id); });
+        if (!items.length) throw { code: "format" };
+        c.est = { items: items, jadwal: r.jadwal || "", asumsi: arr(r.asumsi), belum_pasti: arr(r.belum_pasti), catatan_hardware: r.catatan_hardware || "", express: false };
+      } else if (step === "neg") {
+        r.opsi = (Array.isArray(r.opsi) ? r.opsi : []).slice(0, 4);
+        c.neg = r;
+      } else c[step] = r;
+      save(); setBusy(false); renderOut(step); markSteps();
+      if (step === "ana" || step === "sum" || step === "est" || step === "pen" || step === "neg") { var el = $(SECTION[step]); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    }).catch(function (e) { setBusy(false); showErr(errText(e)); });
+  }
+
+  // ---------- Tarif UI ----------
+  function renderTarif() {
+    var s = db.settings;
+    $("sName").value = s.nama; $("sDp").value = s.dp; $("sExp").value = s.exp; $("sRev").value = s.rev; $("sValid").value = s.valid;
+    var h = "<tr><th>Nama pekerjaan</th><th class=\"num\">Mulai dari</th><th class=\"num\">Sampai</th><th>Satuan</th><th></th></tr>";
+    db.tarif.forEach(function (t, i) {
+      h += "<tr><td><input data-t=\"" + i + "\" data-f=\"nama\" value=\"" + esc(t.nama) + "\" aria-label=\"Nama\"><div style=\"margin-top:6px\"><input data-t=\"" + i + "\" data-f=\"catatan\" value=\"" + esc(t.catatan || "") + "\" placeholder=\"Catatan (opsional)\" aria-label=\"Catatan\"></div></td>" +
+        "<td class=\"num\"><input data-t=\"" + i + "\" data-f=\"min\" type=\"number\" min=\"0\" step=\"50000\" inputmode=\"numeric\" value=\"" + t.min + "\" style=\"width:130px\" aria-label=\"Harga mulai\"></td>" +
+        "<td class=\"num\"><input data-t=\"" + i + "\" data-f=\"max\" type=\"number\" min=\"0\" step=\"50000\" inputmode=\"numeric\" value=\"" + t.max + "\" style=\"width:130px\" aria-label=\"Harga sampai\"></td>" +
+        "<td><input data-t=\"" + i + "\" data-f=\"satuan\" value=\"" + esc(t.satuan || "") + "\" style=\"width:90px\" aria-label=\"Satuan\"></td>" +
+        "<td><button class=\"btn small danger\" data-tdel=\"" + i + "\" aria-label=\"Hapus tarif\">×</button></td></tr>";
+    });
+    $("tTable").innerHTML = h;
+  }
+
+  // ---------- Event ----------
+  function tab(t) {
+    $("desk").hidden = t !== "desk"; $("tarif").hidden = t !== "tarif";
+    $("tDesk").setAttribute("aria-pressed", String(t === "desk")); $("tTarif").setAttribute("aria-pressed", String(t === "tarif"));
+    if (t === "tarif") renderTarif();
+  }
+  $("tDesk").addEventListener("click", function () { tab("desk"); });
+  $("tTarif").addEventListener("click", function () { tab("tarif"); });
+  $("caseSel").addEventListener("change", function (e) { db.cur = e.target.value; save(); renderAll(); });
+  $("newCase").addEventListener("click", function () { newCase(); });
+  $("delCase").addEventListener("click", function () {
+    var b = $("delCase");
+    if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Yakin hapus? Tekan lagi"; setTimeout(function () { b.dataset.sure = ""; b.textContent = "Hapus kasus ini"; }, 3000); return; }
+    b.dataset.sure = ""; b.textContent = "Hapus kasus ini";
+    db.cases = db.cases.filter(function (k) { return k.id !== db.cur; });
+    if (!db.cases.length) newCase(true);
+    db.cur = db.cases[0].id; save(); renderAll();
+  });
+  $("caseName").addEventListener("input", function (e) { cur().name = e.target.value; saveSoon(); var o = $("caseSel").selectedOptions[0]; if (o) o.textContent = (e.target.value || firstWords(cur().msg) || "Kasus tanpa nama") + " · " + new Date(cur().created).toLocaleDateString("id-ID", { day: "numeric", month: "short" }); });
+  $("msg").addEventListener("input", function (e) { cur().msg = e.target.value; saveSoon(); });
+  $("notes").addEventListener("input", function (e) { cur().notes = e.target.value; saveSoon(); });
+  $("steps").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-step]"); if (!b || b.disabled) return;
+    if (b.dataset.step === "neg") {
+      var c = cur(); showErr("");
+      if (!(c.est && c.est.items && c.est.items.length)) { showErr("Buat dulu estimasi harga (langkah 3)."); return; }
+      renderOut("neg"); var el = $("outNeg"); el.scrollIntoView({ behavior: "smooth", block: "start" }); if ($("negMsg")) $("negMsg").focus();
+      return;
+    }
+    run(b.dataset.step);
+  });
+
+  document.addEventListener("click", function (e) {
+    var cb = e.target.closest("[data-copy]"); if (cb) { copyText(copyStore[cb.dataset.copy] || "", cb); return; }
+    if (e.target.id === "negGo") { run("neg"); return; }
+    var d = e.target.closest("[data-del]");
+    if (d) { var c = cur(); c.est.items.splice(+d.dataset.del, 1); save(); renderOut("est"); return; }
+  });
+  document.addEventListener("input", function (e) {
+    var el = e.target;
+    if (el.id === "negMsg") { cur().negMsg = el.value; saveSoon(); return; }
+    if (el.dataset && el.dataset.i != null && el.dataset.f === "qty") {
+      var it = cur().est.items[+el.dataset.i]; it.qty = Math.max(0, Math.round(num(el.value, 0))); saveSoon(); refreshTotals(); return;
+    }
+    if (el.dataset && el.dataset.t != null) {
+      var t = db.tarif[+el.dataset.t], f = el.dataset.f;
+      t[f] = (f === "min" || f === "max") ? Math.max(0, num(el.value, 0)) : el.value; saveSoon();
+    }
+  });
+  document.addEventListener("change", function (e) {
+    var el = e.target, c = cur();
+    if (el.dataset && el.dataset.i != null && el.dataset.f === "level") { c.est.items[+el.dataset.i].level = el.value; save(); renderOut("est"); return; }
+    if (el.id === "express") { c.est.express = el.checked; save(); renderOut("est"); return; }
+    if (el.id === "addItem" && el.value) { c.est.items.push({ id: el.value, qty: 1, level: "mid", alasan: "" }); save(); renderOut("est"); return; }
+    if (el.dataset && el.dataset.t != null && (el.dataset.f === "min" || el.dataset.f === "max")) {
+      var t = db.tarif[+el.dataset.t]; if (t.max < t.min) { if (el.dataset.f === "min") t.max = t.min; else t.min = t.max; renderTarif(); } save();
+    }
+  });
+  function refreshTotals() {
+    var c = cur(), t = totals(c.est), box = $("outEst");
+    var b = box.querySelectorAll(".tot b");
+    if (b.length === 4) { b[0].textContent = rp(t.recommended); b[1].textContent = rp(t.dp); b[2].textContent = rp(t.min) + " – " + rp(t.max); b[3].textContent = rp(t.floor); }
+    c.est.items.forEach(function (it, i) { var el = box.querySelector('[data-price="' + i + '"]'); if (el) el.textContent = rp(linePrice(it)); });
+  }
+  // pengaturan
+  [["sName", "nama", 0], ["sDp", "dp", 1], ["sExp", "exp", 1], ["sRev", "rev", 1], ["sValid", "valid", 1]].forEach(function (a) {
+    $(a[0]).addEventListener("input", function (e) {
+      var v = a[2] ? Math.max(0, num(e.target.value, 0)) : e.target.value;
+      if (a[1] === "dp") v = Math.min(100, v);
+      db.settings[a[1]] = v; saveSoon();
+    });
+  });
+  $("tTable").addEventListener("click", function (e) {
+    var d = e.target.closest("[data-tdel]");
+    if (d) { db.tarif.splice(+d.dataset.tdel, 1); save(); renderTarif(); }
+  });
+  $("addRow").addEventListener("click", function () {
+    db.tarif.push({ id: "t" + Date.now().toString(36), nama: "Pekerjaan baru", min: 500000, max: 1000000, satuan: "proyek", catatan: "" });
+    save(); renderTarif();
+  });
+  $("resetTarif").addEventListener("click", function () {
+    var b = $("resetTarif");
+    if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "Yakin? Tekan lagi"; setTimeout(function () { b.dataset.sure = ""; b.textContent = "Kembalikan ke angka awal"; }, 3000); return; }
+    b.dataset.sure = ""; b.textContent = "Kembalikan ke angka awal";
+    db.tarif = clone(DEFAULT_TARIF); save(); renderTarif();
+  });
+
+  window.addEventListener("pagehide", function () { clearTimeout(saveTimer); save(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) { clearTimeout(saveTimer); save(); } });
+  load(); renderAll();
+})();
+</script>
+</body>
+</html>
