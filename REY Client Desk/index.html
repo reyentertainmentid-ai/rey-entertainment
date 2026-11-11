@@ -174,6 +174,7 @@
         <div><label for="sExp">Tambahan biaya kerja cepat (%)</label><input id="sExp" type="number" min="0" max="200" inputmode="numeric"></div>
         <div><label for="sRev">Revisi gratis (kali)</label><input id="sRev" type="number" min="0" max="20" inputmode="numeric"></div>
         <div><label for="sValid">Penawaran berlaku (hari)</label><input id="sValid" type="number" min="1" max="60" inputmode="numeric"></div>
+        <div><label for="sModel">Model AI (otomatis, ubah hanya jika error model)</label><input id="sModel" placeholder="gemini-3.8-flash" autocapitalize="off" spellcheck="false"></div>
       </div>
       <div class="hint">Semua ini tersimpan hanya di browser ini, tidak ikut ke GitHub.</div>
     </div>
@@ -198,7 +199,6 @@
 
   // ---------- Pengaturan server ----------
   var PROXY_URL = "https://rey-ai.radenjunaedi93.workers.dev";
-  var MODEL = "gemini-3.8-flash";
   var KEY = "rey-desk-v1";
 
   var DEFAULT_TARIF = [
@@ -220,7 +220,8 @@
     { id: "maintenance",  nama: "Perawatan bulanan",                                 min: 200000,   max: 800000,   satuan: "bulan",   catatan: "Perbaikan kecil dan pemantauan." },
     { id: "training",     nama: "Pelatihan pemakaian",                               min: 150000,   max: 400000,   satuan: "sesi",    catatan: "" }
   ];
-  var DEFAULT_SET = { nama: "", dp: 50, exp: 30, rev: 2, valid: 7 };
+  var DEFAULT_SET = { nama: "", dp: 50, exp: 30, rev: 2, valid: 7, model: "" };
+  var FALLBACK_MODELS = ["gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-3.6-flash"];
 
   // ---------- Data ----------
   var db = { settings: clone(DEFAULT_SET), tarif: clone(DEFAULT_TARIF), cases: [], cur: null };
@@ -286,7 +287,7 @@
     "- Jawab HANYA dengan JSON yang valid sesuai format yang diminta, tanpa teks di luar JSON."
   ].join("\n");
 
-  function callAI(task, userText) {
+  function callOne(model, userText) {
     var ctrl = new AbortController();
     var timer = setTimeout(function () { ctrl.abort(); }, 75000);
     var body = {
@@ -294,7 +295,7 @@
       contents: [{ role: "user", parts: [{ text: userText }] }],
       generationConfig: { responseMimeType: "application/json", temperature: 0.4 }
     };
-    return fetch(PROXY_URL.replace(/\/+$/, "") + "/?model=" + encodeURIComponent(MODEL), {
+    return fetch(PROXY_URL.replace(/\/+$/, "") + "/?model=" + encodeURIComponent(model), {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctrl.signal
     }).then(function (r) {
       return r.text().then(function (t) {
@@ -310,7 +311,28 @@
       try { return JSON.parse(text); } catch (e) { throw { code: "format" }; }
     }).then(function (v) { clearTimeout(timer); return v; }, function (e) { clearTimeout(timer); throw e; });
   }
+  function modelList() {
+    var m = (db.settings.model || "").trim();
+    return m ? [m].concat(FALLBACK_MODELS.filter(function (x) { return x !== m; })) : FALLBACK_MODELS.slice();
+  }
+  function callAI(task, userText) {
+    var models = modelList(), i = 0;
+    function next() {
+      var m = models[i];
+      return callOne(m, userText).then(function (r) {
+        if (db.settings.model !== m) { db.settings.model = m; save(); }
+        return r;
+      }, function (e) {
+        var c = e && e.code;
+        if ((c === 400 || c === 404) && i < models.length - 1) { i++; return next(); }
+        if (c === 400 || c === 404) e.modelRejected = true;
+        throw e;
+      });
+    }
+    return next();
+  }
   function errText(e) {
+    if (e && e.modelRejected) return "Semua nama model AI ditolak oleh server perantara. Isi nama model yang benar di tab Tarif & Aturan (kolom Model AI), atau perbarui worker.js di Cloudflare.";
     if (e && e.name === "AbortError") return "Terlalu lama menunggu jawaban. Coba lagi sebentar lagi.";
     var c = e && e.code;
     if (c === 429) return "Jatah sedang habis atau terlalu cepat. Tunggu sebentar lalu coba lagi.";
@@ -535,7 +557,7 @@
   // ---------- Tarif UI ----------
   function renderTarif() {
     var s = db.settings;
-    $("sName").value = s.nama; $("sDp").value = s.dp; $("sExp").value = s.exp; $("sRev").value = s.rev; $("sValid").value = s.valid;
+    $("sName").value = s.nama; $("sDp").value = s.dp; $("sExp").value = s.exp; $("sRev").value = s.rev; $("sValid").value = s.valid; $("sModel").value = s.model || "";
     var h = "<tr><th>Nama pekerjaan</th><th class=\"num\">Mulai dari</th><th class=\"num\">Sampai</th><th>Satuan</th><th></th></tr>";
     db.tarif.forEach(function (t, i) {
       h += "<tr><td><input data-t=\"" + i + "\" data-f=\"nama\" value=\"" + esc(t.nama) + "\" aria-label=\"Nama\"><div style=\"margin-top:6px\"><input data-t=\"" + i + "\" data-f=\"catatan\" value=\"" + esc(t.catatan || "") + "\" placeholder=\"Catatan (opsional)\" aria-label=\"Catatan\"></div></td>" +
@@ -612,7 +634,7 @@
     c.est.items.forEach(function (it, i) { var el = box.querySelector('[data-price="' + i + '"]'); if (el) el.textContent = rp(linePrice(it)); });
   }
   // pengaturan
-  [["sName", "nama", 0], ["sDp", "dp", 1], ["sExp", "exp", 1], ["sRev", "rev", 1], ["sValid", "valid", 1]].forEach(function (a) {
+  [["sModel", "model", 0], ["sName", "nama", 0], ["sDp", "dp", 1], ["sExp", "exp", 1], ["sRev", "rev", 1], ["sValid", "valid", 1]].forEach(function (a) {
     $(a[0]).addEventListener("input", function (e) {
       var v = a[2] ? Math.max(0, num(e.target.value, 0)) : e.target.value;
       if (a[1] === "dp") v = Math.min(100, v);

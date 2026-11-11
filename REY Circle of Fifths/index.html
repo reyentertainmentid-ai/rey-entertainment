@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0b0b">
+<title>REY Circle of Fifths</title>
+<style>
+:root{--bg:#0b0b0b;--card:#141414;--line:#2a2a2a;--tx:#ececec;--mut:#9b9b9b;--gold:#e6b84a;--acc:#3fb8a6}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;padding:max(16px,env(safe-area-inset-top)) 16px 32px;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,"Segoe UI",Roboto,sans-serif}
+h1{margin:0;font-size:1.6rem;font-weight:700}
+h2{margin:0 0 10px;font-size:1.05rem;font-weight:600}
+.sub{color:var(--mut);margin:2px 0 16px;max-width:60ch}
+.wrap{display:grid;gap:16px;grid-template-columns:minmax(0,430px) minmax(0,1fr);max-width:1100px;margin:auto}
+@media(max-width:820px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
+.full{grid-column:1/-1}
+svg{display:block;width:100%;height:auto}
+.sg path{fill:#1b1b1b;stroke:var(--bg);stroke-width:2;cursor:pointer;transition:fill .15s}
+.sg:hover path{fill:#2a2a2a}
+.sg.nb path{fill:#4a3d18}
+.sg.rel path{fill:#16423c}
+.sg.sel path{fill:var(--gold)}
+.sg text{text-anchor:middle;dominant-baseline:central;fill:var(--tx);font-weight:600;pointer-events:none}
+.sg.sel text{fill:#111}
+.sg.o text{font-size:16px}.sg.i text{font-size:13px}.sg.d text{font-size:11px}
+#ck{font-size:26px;font-weight:700;fill:var(--gold);text-anchor:middle}
+#cs{font-size:12px;fill:var(--mut);text-anchor:middle}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px}
+.kv dt{color:var(--mut)}.kv dd{margin:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+select,button{font:inherit;color:var(--tx);background:#1d1d1d;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+select{min-width:0;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.go{background:var(--gold);color:#111;border-color:var(--gold);font-weight:600}
+label{display:flex;gap:6px;align-items:center;color:var(--mut)}
+.chip{display:inline-block;min-width:46px;text-align:center;padding:3px 10px;margin:2px;border-radius:999px;border:1px solid var(--line);font-weight:600}
+.chip small{display:block;font-size:.7rem;color:var(--mut);font-weight:400;line-height:1.1}
+.chip.r{background:var(--gold);border-color:var(--gold);color:#111}.chip.r small{color:#222}
+.chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.ch{text-align:center;padding:8px 4px}
+.ch small{display:block;color:var(--mut)}
+.ch b{font-size:1.02rem}
+.tabs button[aria-pressed=true]{background:var(--gold);color:#111;border-color:var(--gold);font-weight:600}
+.note{color:var(--mut);font-size:.9rem;margin:8px 0 0}
+.pt{font-size:10px;text-anchor:middle;fill:#111;font-weight:700}
+.fn{font-size:9px;text-anchor:middle;dominant-baseline:central;fill:#111;font-weight:700}
+.fl{font-size:10px;text-anchor:middle;fill:var(--mut)}
+.inst{max-width:720px}
+</style>
+</head>
+<body>
+<h1>REY Circle of Fifths</h1>
+<p class="sub">Klik satu kunci di lingkaran. Tanda mula, kunci relatif, skala, chord diatonis, dan posisi nadanya di piano, gitar, bass, serta ukulele akan ikut berubah.</p>
+
+<div class="wrap">
+  <section class="card" aria-label="Lingkaran kuint">
+    <svg id="cof" viewBox="0 0 400 400" role="img" aria-label="Circle of Fifths"></svg>
+    <p class="note">Lingkaran luar: kunci mayor. Tengah: kunci minor relatif. Dalam: chord diminished (vii°). Kuning: kunci yang dipilih. Kuning redup: 7 chord diatonis (I, ii, iii, IV, V, vi, vii°). Hijau: kunci relatif. Klik lingkaran dalam untuk mendengar chord-nya.</p>
+  </section>
+
+  <section class="card" aria-label="Detail kunci">
+    <h2 id="ttl">C mayor</h2>
+    <dl class="kv" id="info"></dl>
+    <div class="row">
+      <select id="scl" aria-label="Pilih skala atau mode"></select>
+      <button class="go" id="ps">Mainkan skala</button>
+      <label><input type="checkbox" id="sev"> Chord 7th</label>
+    </div>
+    <div id="chips"></div>
+    <h2 style="margin-top:16px">Chord diatonis</h2>
+    <div class="chs" id="chs"></div>
+    <p class="note" id="chn"></p>
+  </section>
+
+  <section class="card full" aria-label="Tampilan alat musik">
+    <div class="row tabs" id="tabs"></div>
+    <div class="inst" id="inst"></div>
+    <p class="note">Titik kuning adalah nada dasar. Titik hijau adalah nada lain dalam skala yang dipilih.</p>
+  </section>
+</div>
+
+<script>
+const L="CDEFGAB",NAT=[0,2,4,5,7,9,11],MAJD=NAT;
+const MAJ=[["C",0],["G",7],["D",2],["A",9],["E",4],["B",11],["F♯",6],["D♭",1],["A♭",8],["E♭",3],["B♭",10],["F",5]];
+const MIN=[["A",9],["E",4],["B",11],["F♯",6],["C♯",1],["G♯",8],["D♯",3],["B♭",10],["F",5],["C",0],["G",7],["D",2]];
+const ENH={5:"B mayor setara C♭ mayor (7♭)",6:"F♯ mayor setara G♭ mayor (6♭)",7:"D♭ mayor setara C♯ mayor (7♯)"};
+const SC=[
+["Ionian (mayor)","1 2 3 4 5 6 7"],["Dorian","1 2 3b 4 5 6 7b"],["Phrygian","1 2b 3b 4 5 6b 7b"],
+["Lydian","1 2 3 4# 5 6 7"],["Mixolydian (dominan)","1 2 3 4 5 6 7b"],["Aeolian (minor natural)","1 2 3b 4 5 6b 7b"],
+["Locrian","1 2b 3b 4 5b 6b 7b"],["Harmonic major","1 2 3 4 5 6b 7"],["Harmonic minor","1 2 3b 4 5 6b 7"],
+["Melodic minor","1 2 3b 4 5 6 7"],["Gypsy minor (Hungarian)","1 2 3b 4# 5 6b 7"],["Blues","1 3b 4 5b 5 7b"],
+["Pentatonik mayor","1 2 3 5 6"],["Pentatonik minor","1 3b 4 5 7b"],
+["Diminished (whole-half)","1 2 3b 4 5b 6b 6 7"],["Half-whole diminished","1 2b 3b 3 4# 5 6 7b"]];
+const CQ={"0,4,7":"","0,3,7":"m","0,3,6":"°","0,4,8":"aug","0,4,7,11":"maj7","0,4,7,10":"7","0,3,7,10":"m7","0,3,6,10":"m7♭5","0,3,6,9":"dim7","0,3,7,11":"m(maj7)","0,4,8,11":"maj7♯5","0,4,8,10":"7♯5","0,3,6,11":"dim(maj7)","0,4,6,10":"7♭5","0,4,6,11":"maj7♭5"};
+const INST={
+piano:{n:"Piano"},
+gitar:{n:"Gitar",t:[40,45,50,55,59,64],d:"Standar: E A D G B E"},
+bass:{n:"Bass 4 senar",t:[28,33,38,43],d:"Standar: E A D G"},
+uke:{n:"Ukulele",t:[67,60,64,69],d:"Standar: G C E A"}};
+const st={ring:0,pos:0,sc:0,inst:"piano"};
+const $=s=>document.querySelector(s);
+let ac=null;
+
+function nm(l,pc){let d=((pc-NAT[l])%12+12)%12;if(d>6)d-=12;return L[l]+(d==1?"♯":d==-1?"♭":d==2?"♯♯":d==-2?"♭♭":"")}
+function curRoot(){const [name,pc]=(st.ring?MIN:MAJ)[st.pos];return{name,pc,li:L.indexOf(name[0])}}
+function scaleOf(r,f){return f.split(" ").map(t=>{const m=t.match(/^(\d)([b#]?)$/),d=+m[1],a=m[2]=="b"?-1:m[2]=="#"?1:0,s=((MAJD[d-1]+a)%12+12)%12,pc=(r.pc+s)%12;return{pc,s,n:nm((r.li+d-1)%7,pc)}})}
+function baseMidi(pc){return 57+((pc-9+12)%12)}
+
+/* Lingkaran */
+const P=(r,a)=>[200+r*Math.cos(a*Math.PI/180),200+r*Math.sin(a*Math.PI/180)];
+function seg(r1,r2,a1,a2){const[x1,y1]=P(r2,a1),[x2,y2]=P(r2,a2),[x3,y3]=P(r1,a2),[x4,y4]=P(r1,a1);return`M${x1} ${y1}A${r2} ${r2} 0 0 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 0 0 ${x4} ${y4}Z`}
+function build(){let h="";
+for(let r=0;r<3;r++)for(let i=0;i<12;i++){const c=-90+30*i,[r1,r2]=[[140,192],[98,136],[62,94]][r],[tx,ty]=P((r1+r2)/2,c),m=MAJ[i],lb=r==0?m[0]:r==1?MIN[i][0]+"m":nm((L.indexOf(m[0][0])+6)%7,(m[1]+11)%12)+"°";
+h+=`<g class="sg ${"oid"[r]}" data-r="${r}" data-i="${i}" tabindex="0" role="button" aria-label="${lb}"><path d="${seg(r1,r2,c-14.6,c+14.6)}"/><text x="${tx}" y="${ty}">${lb}</text></g>`}
+h+=`<text id="ck" x="200" y="188">C</text><text id="cs" x="200" y="214"></text>`;
+$("#cof").innerHTML=h}
+
+function sigOf(p){const sh=p<=6,n=sh?p:12-p;if(!n)return{t:"tanpa ♯ atau ♭",l:""};const a=sh?"♯":"♭";return{t:n+a,l:(sh?"FCGDAEB":"BEADGCF").slice(0,n).split("").map(x=>x+a).join(", ")}}
+
+/* Suara */
+function tone(f,t,d){const o=ac.createOscillator(),g=ac.createGain();o.type="triangle";o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.25,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.05)}
+function play(ms,gap){ac=ac||new(window.AudioContext||window.webkitAudioContext)();const t=ac.currentTime+.05;ms.forEach((m,i)=>tone(440*2**((m-69)/12),t+i*gap,gap?.5:1.4))}
+
+/* Chord diatonis */
+function chordsOf(sc,sev){const b=baseMidi(sc[0].pc),rn=["I","II","III","IV","V","VI","VII"];
+return sc.map((x,i)=>{const ks=(sev?[0,2,4,6]:[0,2,4]).map(k=>i+k);
+const iv=ks.map(k=>((sc[k%7].s+12*Math.floor(k/7)-x.s)%12+12)%12),key=iv.join(",");
+const q=key in CQ?CQ[key]:"(?)",minor=iv[1]==3,dim=iv[2]==6;
+const d=x.s-MAJD[i];let num=(d<0?"♭":d>0?"♯":"")+(minor?rn[i].toLowerCase():rn[i])+(dim?"°":iv[2]==8?"+":"");
+return{name:x.n+q,num,midi:ks.map(k=>b+sc[k%7].s+12*Math.floor(k/7))}})}
+
+/* Alat musik */
+function pianoSvg(mp){let w=0,wh="",bl="";
+for(let n=0;n<24;n++){const pc=n%12,m=mp[pc],white=NAT.includes(pc),fill=m?(m.r?"var(--gold)":"var(--acc)"):(white?"#e8e8e8":"#262626");
+if(white){wh+=`<rect x="${w*28}" y="0" width="27" height="110" rx="3" fill="${fill}"/>`+(m?`<text class="pt" x="${w*28+13.5}" y="98">${m.n}</text>`:"");w++}
+else bl+=`<rect x="${w*28-9}" y="0" width="18" height="66" rx="2" fill="${fill}" stroke="#000"/>`+(m?`<text class="pt" x="${w*28}" y="56">${m.n}</text>`:"")}
+return`<svg viewBox="0 0 392 112" role="img" aria-label="Piano">${wh}${bl}</svg>`}
+function fretSvg(tun,mp){const n=tun.length,yb=18+(n-1)*26,H=yb+36;let s="";
+for(let f=0;f<=12;f++){const x=40+f*40;s+=`<line x1="${x}" y1="6" x2="${x}" y2="${yb+12}" stroke="${f?"#444":"#bbb"}" stroke-width="${f?1.5:4}"/>`}
+[...tun].reverse().forEach((o,r)=>{const y=18+r*26;s+=`<line x1="40" y1="${y}" x2="520" y2="${y}" stroke="#777"/>`;
+for(let f=0;f<=12;f++){const m=mp[(o+f)%12];if(m){const x=20+f*40;s+=`<circle cx="${x}" cy="${y}" r="10" fill="${m.r?"var(--gold)":"var(--acc)"}"/><text class="fn" x="${x}" y="${y}">${m.n}</text>`}}});
+[0,3,5,7,9,12].forEach(f=>s+=`<text class="fl" x="${20+f*40}" y="${yb+30}">${f?f:"senar kosong"}</text>`);
+return`<svg viewBox="0 0 540 ${H}" role="img" aria-label="Papan fret">${s}</svg>`}
+
+/* Render */
+function render(){
+const r=curRoot(),sc=scaleOf(r,SC[st.sc][1]),sev=$("#sev").checked;
+document.querySelectorAll(".sg").forEach(g=>{const gr=+g.dataset.r,i=+g.dataset.i,p=st.pos,near=i==p||i==(p+1)%12||i==(p+11)%12,inD=gr==2?i==p:near,sel=gr==st.ring&&i==p,rel=gr<2&&gr!=st.ring&&i==p;
+g.classList.toggle("sel",sel);g.classList.toggle("rel",rel);g.classList.toggle("nb",inD&&!sel&&!rel)});
+const sg=sigOf(st.pos),kn=r.name+(st.ring?" minor":" mayor");
+$("#ck").textContent=r.name+(st.ring?"m":"");$("#cs").textContent=sg.t;
+$("#ttl").textContent=kn+" · "+SC[st.sc][0];
+const rel=st.ring?MAJ[st.pos][0]+" mayor":MIN[st.pos][0]+" minor",rg=st.ring?MIN:MAJ;
+$("#info").innerHTML=`<dt>Tanda mula</dt><dd>${sg.t}${sg.l?" ("+sg.l+")":""}</dd><dt>Kunci relatif</dt><dd>${rel}</dd><dt>Subdominan (IV)</dt><dd>${rg[(st.pos+11)%12][0]}${st.ring?"m":""}</dd><dt>Dominan (V)</dt><dd>${rg[(st.pos+1)%12][0]}${st.ring?"m":""}</dd>`+(!st.ring&&ENH[st.pos]?`<dt>Enharmonik</dt><dd>${ENH[st.pos]}</dd>`:"");
+$("#chips").innerHTML=sc.map((x,i)=>`<span class="chip${i?"":" r"}">${x.n}</span>`).join("");
+if(sc.length==7){const cs=chordsOf(sc,sev);
+$("#chs").innerHTML=cs.map((c,i)=>`<button class="ch" data-i="${i}"><small>${c.num}</small><b>${c.name}</b></button>`).join("");
+$("#chn").textContent="Klik chord untuk mendengarkannya.";window._cs=cs}
+else{$("#chs").innerHTML="";$("#chn").textContent="Skala ini tidak 7 nada, jadi chord diatonis tidak ditampilkan.";window._cs=[]}
+const mp={};sc.forEach((x,i)=>{if(!(x.pc in mp))mp[x.pc]={n:x.n,r:i==0}});
+const I=INST[st.inst];
+$("#inst").innerHTML=(I.t?`<p class="note" style="margin:0 0 8px">${I.n}. ${I.d}</p>${fretSvg(I.t,mp)}`:pianoSvg(mp));
+window._sc=sc}
+
+/* Event */
+$("#scl").innerHTML=SC.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join("");
+$("#tabs").innerHTML=Object.keys(INST).map(k=>`<button data-k="${k}" aria-pressed="${k==st.inst}">${INST[k].n}</button>`).join("");
+build();
+function pick(g){const r=+g.dataset.r,i=+g.dataset.i;if(r==2){const b=baseMidi((MAJ[i][1]+11)%12);play([b,b+3,b+6],0);return}st.ring=r;st.pos=i;st.sc=r?5:0;$("#scl").value=st.sc;render()}
+$("#cof").addEventListener("click",e=>{const g=e.target.closest(".sg");if(g)pick(g)});
+$("#cof").addEventListener("keydown",e=>{const g=e.target.closest(".sg");if(g&&(e.key=="Enter"||e.key==" ")){e.preventDefault();pick(g)}});
+$("#scl").addEventListener("change",e=>{st.sc=+e.target.value;render()});
+$("#sev").addEventListener("change",render);
+$("#chs").addEventListener("click",e=>{const b=e.target.closest(".ch");if(b)play(window._cs[+b.dataset.i].midi,0)});
+$("#ps").addEventListener("click",()=>{const sc=window._sc,b=baseMidi(sc[0].pc);play([...sc.map(x=>b+x.s),b+12],.32)});
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;st.inst=b.dataset.k;
+document.querySelectorAll("#tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
+render();
+</script>
+</body>
+</html>
