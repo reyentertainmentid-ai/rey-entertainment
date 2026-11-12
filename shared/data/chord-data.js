@@ -1,0 +1,86 @@
+/* REY shared: data chord (sumber: tab DATA CHORD, sudah dikoreksi).
+   Tiap baris: [simbol, rumus, nama, golongan, catatan].
+   simbol = penulisan setelah nama nada (major = kosong). rumus: b = turun, # = naik, bb = turun dua.
+   golongan: triad, sus, power, tambahan, 7th, 9th, ekstensi, sus7, langka (jarang atau teoretis). */
+window.REY_DATA=window.REY_DATA||{};
+REY_DATA.chords=[
+/* triad */
+["","1 3 5","Major","triad"],
+["m","1 3b 5","Minor","triad"],
+["dim","1 3b 5b","Diminished","triad"],
+["aug","1 3 5#","Augmented","triad"],
+["5","1 5","Power Chord","power","Hanya nada 1 dan 5 (boleh ditambah nada 1 satu oktaf di atas). Dikoreksi dari 1 5 1."],
+/* sus */
+["sus2","1 2 5","Suspended 2nd","sus"],
+["sus4","1 4 5","Suspended 4th","sus"],
+/* tambahan (6th dan add) */
+["6","1 3 5 6","6th","tambahan"],
+["m6","1 3b 5 6","Minor 6th","tambahan"],
+["6/9","1 3 5 6 9","6th Add 9th","tambahan"],
+["m6/9","1 3b 5 6 9","Minor 6th Add 9th","tambahan"],
+["add2","1 2 3 5","Add2","tambahan","Nadanya sama dengan add9, hanya beda oktaf. Urutan rumus dirapikan dari 1 3 5 2."],
+["add9","1 3 5 9","Add9","tambahan"],
+["add11","1 3 5 11","Add11","tambahan","Nada 11 (4) berbenturan dengan nada 3, terdengar tegang."],
+["add13","1 3 5 13","Add13","tambahan","Nadanya sama dengan chord 6 (13 adalah 6 beda oktaf)."],
+["m(add9)","1 3b 5 9","Minor Add 9th","tambahan","USUL: belum ada di tabel awal, umum dipakai."],
+/* 7th */
+["7","1 3 5 7b","7th","7th"],
+["maj7","1 3 5 7","Major 7th","7th"],
+["m7","1 3b 5 7b","Minor 7th","7th"],
+["m(maj7)","1 3b 5 7","Minor Major 7th","7th"],
+["m7♭5","1 3b 5b 7b","Minor 7th Flat 5th","7th","Disebut juga half-diminished."],
+["dim7","1 3b 5b 7bb","Diminished 7th","7th"],
+["7♯5","1 3 5# 7b","Augmented 7th","7th","Alias: aug7."],
+["maj7♯5","1 3 5# 7","Major 7th Sharp 5th","7th","Alias: augM7. Di tabel awal tertulis dua kali (augM7 dan Maj7#5)."],
+["7♭5","1 3 5b 7b","7th Flat 5th","7th"],
+/* sus + 7th */
+["7sus4","1 4 5 7b","7th Suspended 4th","sus7"],
+["7sus2","1 2 5 7b","7th Suspended 2nd","sus7"],
+["maj7sus4","1 4 5 7","Major 7th Suspended 4th","sus7"],
+["maj7sus2","1 2 5 7","Major 7th Suspended 2nd","sus7"],
+/* 9th dan alterasi */
+["9","1 3 5 7b 9","9th","9th"],
+["maj9","1 3 5 7 9","Major 9th","9th"],
+["m9","1 3b 5 7b 9","Minor 9th","9th"],
+["m(maj9)","1 3b 5 7 9","Minor Major 9th","9th"],
+["9♭5","1 3 5b 7b 9","9th Flat 5th","9th"],
+["9♯5","1 3 5# 7b 9","Augmented 9th","9th","Alias: aug9."],
+["maj9♯5","1 3 5# 7 9","Augmented Major 9th","9th","Alias: augM9."],
+["9sus4","1 4 5 7b 9","9th Suspended 4th","9th"],
+["7♭9","1 3 5 7b 9b","7th Flat 9th","9th"],
+["7♯9","1 3 5 7b 9#","7th Sharp 9th","9th"],
+["7♯9♭5","1 3 5b 7b 9#","7th Sharp 9th Flat 5th","9th"],
+["m7♭9","1 3b 5 7b 9b","Minor 7th Flat 9th","9th"],
+["7♯5♭9","1 3 5# 7b 9b","7th Sharp 5th Flat 9th","9th","USUL: chord alterasi yang umum di jazz."],
+/* ekstensi 11 dan 13 */
+["11","1 3 5 7b 9 11","11th","ekstensi","Nada 3 sering dibuang karena bentrok dengan nada 11."],
+["m11","1 3b 5 7b 9 11","Minor 11th","ekstensi"],
+["maj11","1 3 5 7 9 11","Major 11th","ekstensi","Nada 11 natural bentrok dengan 3; praktiknya lebih sering memakai maj9♯11."],
+["m(maj11)","1 3b 5 7 9 11","Minor Major 11th","ekstensi"],
+["maj9♯11","1 3 5 7 9 11#","Major Sharp 11th","ekstensi","Di tabel awal bernama Maj#11."],
+["13","1 3 5 7b 9 11 13","13th","ekstensi","Nada 11 biasanya dibuang (bentrok dengan 3)."],
+["maj13","1 3 5 7 9 11 13","Major 13th","ekstensi","Nada 11 biasanya dibuang."],
+["m13","1 3b 5 7b 9 11 13","Minor 13th","ekstensi"],
+["m(maj13)","1 3b 5 7 9 11 13","Minor Major 13th","ekstensi"],
+["7♯11","1 3 5 7b 11#","7th Sharp 11th","ekstensi","USUL: dominan bernuansa lydian, umum di jazz."],
+["7♭13","1 3 5 7b 13b","7th Flat 13th","ekstensi","USUL: umum dipakai sebagai dominan menuju chord minor."],
+/* langka atau teoretis */
+["♭5","1 3 5b","Major Flat 5th","langka","Di tabel awal bernama Mb5. Jarang dipakai."],
+["m♯5","1 3b 5#","Minor Sharp 5th","langka","Jarang. Nadanya sama dengan chord mayor yang dibalik."],
+["m(♭♭5)","1 3b 5bb","Minor Double Flat 5th","langka","Teoretis: 5♭♭ sama dengan nada 4 (C E♭ F), bukan chord yang dipakai. Sebaiknya dihapus."],
+["sus2♭5","1 2 5b","Suspended 2nd Flat 5th","langka"],
+["sus2♯5","1 2 5#","Suspended 2nd Sharp 5th","langka"],
+["sus4♯5","1 4 5#","Suspended 4th Sharp 5th","langka"],
+["sus2sus4","1 2 4 5","Suspended 2nd Suspended 4th","langka"],
+["6♭5","1 3 5b 6","6th Flat 5th","langka"],
+["maj7♭5","1 3 5b 7","Major 7th Flat 5th","langka"],
+["m7♯5","1 3b 5# 7b","Minor 7th Sharp 5th","langka"],
+["m(maj7)♭5","1 3b 5b 7","Minor Major 7th Flat 5th","langka","Alias: dim(maj7)."],
+["m(maj7)♯5","1 3b 5# 7","Minor Major 7th Sharp 5th","langka"],
+["m(maj7)♭♭5","1 3b 5bb 7","Minor Major 7th Double Flat 5th","langka","Teoretis: sama seperti m(♭♭5). Sebaiknya dihapus."],
+["7sus2sus4","1 2 4 5 7b","7th Suspended 2nd Suspended 4th","langka","Nadanya sama dengan 9sus4."],
+["maj7sus2sus4","1 2 4 5 7","Major 7th Suspended 2nd Suspended 4th","langka"],
+["7sus2♯5","1 2 5# 7b","7th Suspended 2nd Sharp 5th","langka"],
+["7sus4♯5","1 4 5# 7b","7th Suspended 4th Sharp 5th","langka"],
+["maj7sus4♯5","1 4 5# 7","Major 7th Suspended 4th Sharp 5th","langka"]
+];

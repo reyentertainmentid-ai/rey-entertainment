@@ -5,7 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0b0b0b">
-<title>REY Circle of Fifths</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Circle of Fifths Interaktif: Kunci, Tanda Mula, Chord Diatonis | REY Circle of Fifths</title>
+<meta name="description" content="Circle of Fifths interaktif untuk semua kunci: tanda mula, chord diatonis, dan skala. Gratis di browser HP atau laptop, bisa dipakai offline.">
+<link rel="canonical" href="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Circle%20of%20Fifths/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="REY Entertainment">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Circle of Fifths Interaktif: Kunci, Tanda Mula, Chord Diatonis | REY Circle of Fifths">
+<meta property="og:description" content="Circle of Fifths interaktif untuk semua kunci: tanda mula, chord diatonis, dan skala. Gratis di browser HP atau laptop, bisa dipakai offline.">
+<meta property="og:url" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Circle%20of%20Fifths/">
+<meta property="og:image" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Circle%20of%20Fifths/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Circle of Fifths Interaktif: Kunci, Tanda Mula, Chord Diatonis | REY Circle of Fifths">
+<meta name="twitter:description" content="Circle of Fifths interaktif untuk semua kunci: tanda mula, chord diatonis, dan skala. Gratis di browser HP atau laptop, bisa dipakai offline.">
+<meta name="twitter:image" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Circle%20of%20Fifths/og.jpg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "REY Circle of Fifths", "url": "https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Circle%20of%20Fifths/", "description": "Circle of Fifths interaktif untuk semua kunci: tanda mula, chord diatonis, dan skala. Gratis di browser HP atau laptop, bisa dipakai offline.", "inLanguage": "id", "publisher": {"@type": "Organization", "name": "REY Entertainment", "url": "https://reyentertainmentid-ai.github.io/rey-entertainment/"}, "applicationCategory": "EducationalApplication", "operatingSystem": "Web, Android, Windows", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "IDR"}}</script>
 <style>
 :root{--bg:#0b0b0b;--card:#141414;--line:#2a2a2a;--tx:#ececec;--mut:#9b9b9b;--gold:#e6b84a;--acc:#3fb8a6}
 *{box-sizing:border-box}
@@ -52,11 +70,21 @@ label{display:flex;gap:6px;align-items:center;color:var(--mut)}
 .fn{font-size:9px;text-anchor:middle;dominant-baseline:central;fill:#111;font-weight:700}
 .fl{font-size:10px;text-anchor:middle;fill:var(--mut)}
 .inst{max-width:720px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:2px}
+.rey-home{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1b160d;border:1.5px solid #8a6a1e;color:#f4d67e;text-decoration:none}
+.rey-home svg{width:18px;height:18px;display:block}
+.rey-home:hover{border-color:#f4d67e}
+.advbtn{margin-left:auto}
+body:not(.adv) .advo{display:none}
 </style>
 </head>
 <body>
-<h1>REY Circle of Fifths</h1>
-<p class="sub">Klik satu kunci di lingkaran. Tanda mula, kunci relatif, skala, chord diatonis, dan posisi nadanya di piano, gitar, bass, serta ukulele akan ikut berubah.</p>
+<header class="top">
+  <a class="rey-home" href="../index.html" aria-label="Kembali ke beranda REY Entertainment" title="Beranda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></a>
+  <h1>REY Circle of Fifths</h1>
+  <button class="advbtn" id="adv" aria-pressed="false">Mode lanjutan</button>
+</header>
+<p class="sub">Klik satu kunci di lingkaran. Tanda mula, kunci relatif, nada, dan 7 chord diatonisnya akan muncul. Tekan Mode lanjutan untuk skala lain, chord 7th, dan tampilan alat musik.</p>
 
 <div class="wrap">
   <section class="card" aria-label="Lingkaran kuint">
@@ -68,9 +96,9 @@ label{display:flex;gap:6px;align-items:center;color:var(--mut)}
     <h2 id="ttl">C mayor</h2>
     <dl class="kv" id="info"></dl>
     <div class="row">
-      <select id="scl" aria-label="Pilih skala atau mode"></select>
+      <select id="scl" class="advo" aria-label="Pilih skala atau mode"></select>
       <button class="go" id="ps">Mainkan skala</button>
-      <label><input type="checkbox" id="sev"> Chord 7th</label>
+      <label class="advo"><input type="checkbox" id="sev"> Chord 7th</label>
     </div>
     <div id="chips"></div>
     <h2 style="margin-top:16px">Chord diatonis</h2>
@@ -78,25 +106,21 @@ label{display:flex;gap:6px;align-items:center;color:var(--mut)}
     <p class="note" id="chn"></p>
   </section>
 
-  <section class="card full" aria-label="Tampilan alat musik">
+  <section class="card full advo" aria-label="Tampilan alat musik">
     <div class="row tabs" id="tabs"></div>
     <div class="inst" id="inst"></div>
     <p class="note">Titik kuning adalah nada dasar. Titik hijau adalah nada lain dalam skala yang dipilih.</p>
   </section>
 </div>
 
+<script src="../shared/theory.js"></script>
+<script src="../shared/data/scale-data.js"></script>
 <script>
 const L="CDEFGAB",NAT=[0,2,4,5,7,9,11],MAJD=NAT;
 const MAJ=[["C",0],["G",7],["D",2],["A",9],["E",4],["B",11],["F♯",6],["D♭",1],["A♭",8],["E♭",3],["B♭",10],["F",5]];
 const MIN=[["A",9],["E",4],["B",11],["F♯",6],["C♯",1],["G♯",8],["D♯",3],["B♭",10],["F",5],["C",0],["G",7],["D",2]];
 const ENH={5:"B mayor setara C♭ mayor (7♭)",6:"F♯ mayor setara G♭ mayor (6♭)",7:"D♭ mayor setara C♯ mayor (7♯)"};
-const SC=[
-["Ionian (mayor)","1 2 3 4 5 6 7"],["Dorian","1 2 3b 4 5 6 7b"],["Phrygian","1 2b 3b 4 5 6b 7b"],
-["Lydian","1 2 3 4# 5 6 7"],["Mixolydian (dominan)","1 2 3 4 5 6 7b"],["Aeolian (minor natural)","1 2 3b 4 5 6b 7b"],
-["Locrian","1 2b 3b 4 5b 6b 7b"],["Harmonic major","1 2 3 4 5 6b 7"],["Harmonic minor","1 2 3b 4 5 6b 7"],
-["Melodic minor","1 2 3b 4 5 6 7"],["Gypsy minor (Hungarian)","1 2 3b 4# 5 6b 7"],["Blues","1 3b 4 5b 5 7b"],
-["Pentatonik mayor","1 2 3 5 6"],["Pentatonik minor","1 3b 4 5 7b"],
-["Diminished (whole-half)","1 2 3b 4 5b 6b 6 7"],["Half-whole diminished","1 2b 3b 3 4# 5 6 7b"]];
+const SC=REY_DATA.scales;
 const CQ={"0,4,7":"","0,3,7":"m","0,3,6":"°","0,4,8":"aug","0,4,7,11":"maj7","0,4,7,10":"7","0,3,7,10":"m7","0,3,6,10":"m7♭5","0,3,6,9":"dim7","0,3,7,11":"m(maj7)","0,4,8,11":"maj7♯5","0,4,8,10":"7♯5","0,3,6,11":"dim(maj7)","0,4,6,10":"7♭5","0,4,6,11":"maj7♭5"};
 const INST={
 piano:{n:"Piano"},
@@ -107,9 +131,8 @@ const st={ring:0,pos:0,sc:0,inst:"piano"};
 const $=s=>document.querySelector(s);
 let ac=null;
 
-function nm(l,pc){let d=((pc-NAT[l])%12+12)%12;if(d>6)d-=12;return L[l]+(d==1?"♯":d==-1?"♭":d==2?"♯♯":d==-2?"♭♭":"")}
+const nm=REY.nm,scaleOf=REY.scaleOf;
 function curRoot(){const [name,pc]=(st.ring?MIN:MAJ)[st.pos];return{name,pc,li:L.indexOf(name[0])}}
-function scaleOf(r,f){return f.split(" ").map(t=>{const m=t.match(/^(\d)([b#]?)$/),d=+m[1],a=m[2]=="b"?-1:m[2]=="#"?1:0,s=((MAJD[d-1]+a)%12+12)%12,pc=(r.pc+s)%12;return{pc,s,n:nm((r.li+d-1)%7,pc)}})}
 function baseMidi(pc){return 57+((pc-9+12)%12)}
 
 /* Lingkaran */
@@ -155,7 +178,7 @@ document.querySelectorAll(".sg").forEach(g=>{const gr=+g.dataset.r,i=+g.dataset.
 g.classList.toggle("sel",sel);g.classList.toggle("rel",rel);g.classList.toggle("nb",inD&&!sel&&!rel)});
 const sg=sigOf(st.pos),kn=r.name+(st.ring?" minor":" mayor");
 $("#ck").textContent=r.name+(st.ring?"m":"");$("#cs").textContent=sg.t;
-$("#ttl").textContent=kn+" · "+SC[st.sc][0];
+$("#ttl").textContent=kn+(document.body.classList.contains("adv")?" · "+SC[st.sc][0]:"");
 const rel=st.ring?MAJ[st.pos][0]+" mayor":MIN[st.pos][0]+" minor",rg=st.ring?MIN:MAJ;
 $("#info").innerHTML=`<dt>Tanda mula</dt><dd>${sg.t}${sg.l?" ("+sg.l+")":""}</dd><dt>Kunci relatif</dt><dd>${rel}</dd><dt>Subdominan (IV)</dt><dd>${rg[(st.pos+11)%12][0]}${st.ring?"m":""}</dd><dt>Dominan (V)</dt><dd>${rg[(st.pos+1)%12][0]}${st.ring?"m":""}</dd>`+(!st.ring&&ENH[st.pos]?`<dt>Enharmonik</dt><dd>${ENH[st.pos]}</dd>`:"");
 $("#chips").innerHTML=sc.map((x,i)=>`<span class="chip${i?"":" r"}">${x.n}</span>`).join("");
@@ -177,11 +200,13 @@ $("#cof").addEventListener("click",e=>{const g=e.target.closest(".sg");if(g)pick
 $("#cof").addEventListener("keydown",e=>{const g=e.target.closest(".sg");if(g&&(e.key=="Enter"||e.key==" ")){e.preventDefault();pick(g)}});
 $("#scl").addEventListener("change",e=>{st.sc=+e.target.value;render()});
 $("#sev").addEventListener("change",render);
+$("#adv").addEventListener("click",e=>{const on=!document.body.classList.contains("adv");document.body.classList.toggle("adv",on);e.currentTarget.setAttribute("aria-pressed",on);e.currentTarget.textContent=on?"Mode sederhana":"Mode lanjutan";if(!on){st.sc=st.ring?5:0;$("#scl").value=st.sc;$("#sev").checked=false}render()});
 $("#chs").addEventListener("click",e=>{const b=e.target.closest(".ch");if(b)play(window._cs[+b.dataset.i].midi,0)});
 $("#ps").addEventListener("click",()=>{const sc=window._sc,b=baseMidi(sc[0].pc);play([...sc.map(x=>b+x.s),b+12],.32)});
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;st.inst=b.dataset.k;
 document.querySelectorAll("#tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
 render();
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
 </script>
 </body>
 </html>
