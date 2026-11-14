@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0908">
+<meta name="color-scheme" content="dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Transposer Chord dan Kalkulator Capo Gitar | REY Transposer dan Capo</title>
+<meta name="description" content="Ubah kunci lagu dan chord dengan sekali ketuk, lalu hitung posisi capo gitar yang paling mudah dimainkan. Gratis di browser HP atau laptop.">
+<link rel="canonical" href="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Transposer%20dan%20Capo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="REY Entertainment">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Transposer Chord dan Kalkulator Capo Gitar | REY Transposer dan Capo">
+<meta property="og:description" content="Ubah kunci lagu dan chord dengan sekali ketuk, lalu hitung posisi capo gitar yang paling mudah dimainkan. Gratis di browser HP atau laptop.">
+<meta property="og:url" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Transposer%20dan%20Capo/">
+<meta property="og:image" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Transposer%20dan%20Capo/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transposer Chord dan Kalkulator Capo Gitar | REY Transposer dan Capo">
+<meta name="twitter:description" content="Ubah kunci lagu dan chord dengan sekali ketuk, lalu hitung posisi capo gitar yang paling mudah dimainkan. Gratis di browser HP atau laptop.">
+<meta name="twitter:image" content="https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Transposer%20dan%20Capo/og.jpg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "REY Transposer dan Capo", "url": "https://reyentertainmentid-ai.github.io/rey-entertainment/REY%20Transposer%20dan%20Capo/", "description": "Ubah kunci lagu dan chord dengan sekali ketuk, lalu hitung posisi capo gitar yang paling mudah dimainkan. Gratis di browser HP atau laptop.", "inLanguage": "id", "publisher": {"@type": "Organization", "name": "REY Entertainment", "url": "https://reyentertainmentid-ai.github.io/rey-entertainment/"}, "applicationCategory": "MusicApplication", "operatingSystem": "Web, Android, Windows", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "IDR"}}</script>
+<style>
+:root{--bg:#0a0908;--gd:#c8a451;--gl:#e2c77d;--gk:#7d6428;--tx:#f5f5f5;--mu:#b8b8b8;--S:#6fa8dc;--D:#e06666;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 Arial,Helvetica,sans-serif;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #292929}
+.rey-home{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1b160d;border:1.5px solid #8a6a1e;color:#f4d67e;text-decoration:none}
+.rey-home svg{width:18px;height:18px;display:block}
+.rey-home:hover{border-color:#f4d67e}
+:focus-visible{outline:3px solid var(--gl);outline-offset:2px}
+h1{font-size:1.15rem;margin:0;color:var(--gl);letter-spacing:.04em}
+.sub,.mu{color:var(--mu);margin:0}.sub{font-size:.8rem}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid #292929}
+nav button{flex:none}
+main{max-width:860px;margin:0 auto;padding:16px}
+section{display:none}section.on{display:block}
+.card{background:linear-gradient(145deg,#151515,#090909);border:1px solid var(--gd);border-radius:12px;padding:16px;margin:0 0 16px}
+h2{margin:0 0 6px;color:var(--gl);font-size:1.3rem}h3{margin:0 0 8px;color:var(--gl);font-size:1.05rem}
+p{margin:0 0 10px}
+button{font:inherit;color:var(--gl);background:linear-gradient(180deg,#302719,#17120a);border:1px solid var(--gd);border-radius:8px;padding:8px 14px;min-height:42px;cursor:pointer}
+button:hover,button.on{background:var(--gd);color:#111}
+.go{font-weight:bold}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.row button{min-width:48px;padding:8px 10px}
+svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.kt{font-size:11px;text-anchor:middle;font-weight:bold;pointer-events:none}
+.res{background:#17120a;border:1px solid var(--gk);border-radius:8px;padding:10px 12px;margin:10px 0}
+.fams{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;margin:10px 0}
+.fc{text-align:center;padding:8px 4px;border-width:2px}
+.fc small{display:block;color:var(--mu)}.fc b{font-size:1.1rem}.fc:hover small,.fc.on small{color:#222}
+.fc.T{border-color:var(--gl)}.fc.S{border-color:var(--S)}.fc.D{border-color:var(--D)}
+.fn3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.fn3 div{border:2px solid;border-radius:10px;padding:10px;background:#101010}
+.fn3 .T{border-color:var(--gl)}.fn3 .S{border-color:var(--S)}.fn3 .D{border-color:var(--D)}
+.chips{min-height:46px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.chips span{padding:6px 12px;border-radius:999px;border:2px solid var(--gk);font-weight:bold}
+.chips span.T{border-color:var(--gl)}.chips span.S{border-color:var(--S)}.chips span.D{border-color:var(--D)}
+.chips span.now{background:var(--gd);color:#111}
+.q button{display:block;width:100%;text-align:left;margin:8px 0}
+.q button.ok{background:#1f3a1f;border-color:#5fbf5f;color:#d8ffd8}.q button.no{background:#3a1f1f;border-color:#bf5f5f;color:#ffd8d8}
+.soon{display:inline-block;padding:10px 18px;border:1px solid #3a3a3a;border-radius:6px;background:#121212;color:#8a8a8a}
+.soon.nx{border-color:var(--gd);color:var(--gl);background:linear-gradient(180deg,#302719,#17120a);text-decoration:none;font-weight:bold}
+
+.tb{width:100%;border-collapse:collapse}.tb th,.tb td{padding:7px 8px;border-bottom:1px solid #292929;text-align:left}.tb th{color:var(--mu);font-weight:normal;font-size:.85rem}
+input[type=text],select,textarea{font:inherit;color:var(--tx);background:#111;border:1px solid var(--gd);border-radius:8px;padding:10px;width:100%}
+select{width:auto;min-height:42px}
+textarea{font-family:"DejaVu Sans Mono",Consolas,monospace;font-size:.9rem;min-height:170px;resize:vertical}
+pre.out{white-space:pre-wrap;word-break:break-word;background:#0f0d09;border:1px solid var(--gk);border-radius:8px;padding:12px;margin:10px 0;font:.9rem/1.5 "DejaVu Sans Mono",Consolas,monospace;color:var(--gl)}
+.tbw{overflow-x:auto;margin:10px 0}.tbw .tb td{white-space:nowrap}
+.bor{background:#2a2110;color:var(--gl);font-weight:bold}
+td button.cl{min-height:36px;padding:4px 8px;width:100%}
+td button.cl.bor{border-color:var(--gl)}
+.mt{margin-top:10px}.sm{font-size:.85rem}
+.step{border:1px solid var(--gk);border-radius:10px;padding:12px;margin:0 0 10px;background:#101010}
+.step h3{margin:0 0 4px}.seq{font-size:1.05rem;margin:6px 0}.seq b{color:var(--gl)}
+.arrow{color:var(--gd);padding:0 4px}
+.chk{display:flex;gap:8px;align-items:center;margin:6px 0}.chk input{width:20px;height:20px}
+</style>
+</head>
+<body>
+<header>
+  <a class="rey-home" href="../index.html" aria-label="Kembali ke beranda REY Entertainment" title="Beranda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></a>
+  <div><h1>REY Transposer dan Capo</h1><p class="sub">Ubah kunci lagu dan hitung posisi capo</p></div>
+</header>
+<nav id="nav" aria-label="Menu"></nav>
+<main>
+
+<section id="s0" class="on">
+  <div class="card"><h2>1. Transposer</h2>
+    <p class="mu">Tempel lagu dengan chord-nya (baris chord di atas lirik, atau chord dalam kurung siku seperti [C]), pilih kunci asli dan kunci tujuan.</p>
+    <textarea id="inp" aria-label="Lagu dan chord" spellcheck="false"></textarea>
+    <div class="row"><button id="ex">Contoh</button><button id="clr">Kosongkan</button></div>
+    <div class="row"><span>Dari kunci</span><select id="fk" aria-label="Kunci asli"></select><span>ke kunci</span><select id="tk" aria-label="Kunci tujuan"></select></div>
+    <div class="row"><button id="dn">− setengah nada</button><button id="up">+ setengah nada</button><span class="mu">Tulis:</span><select id="acc" aria-label="Penulisan"><option value="a">Otomatis</option><option value="s">Kres (#)</option><option value="f">Mol (b)</option></select></div>
+    <p class="res" id="inf"></p>
+    <pre class="out" id="out"></pre>
+    <div class="row"><button class="go" id="cp">Salin hasil</button><button id="pl">Dengarkan chord</button></div>
+    <p class="res" id="dia"></p>
+  </div>
+  <div class="card"><h3>Penjelasan</h3>
+    <p><b>Transpose</b> berarti menggeser semua chord dengan jarak yang sama. Misalnya dari C ke D semua chord naik 2 setengah nada: C menjadi D, F menjadi G, Am menjadi Bm. Jenis chord (m, 7, maj7, sus4, dan lain-lain) tidak berubah.</p>
+    <p>Aplikasi ini hanya mengubah baris yang seluruhnya berisi chord, dan chord dalam kurung siku. Kata di lirik tidak disentuh. Jarak antar chord dijaga sebisa mungkin supaya tetap sejajar dengan liriknya.</p>
+    <p>Penulisan kres atau mol dipilih otomatis mengikuti kunci tujuan (misalnya kunci F memakai B♭, bukan A♯). Kamu bisa mengubahnya sendiri lewat pilihan "Tulis".</p>
+  </div>
+</section>
+
+<section id="s1">
+  <div class="card"><h2>2. Capo</h2>
+    <p class="mu">Capo membuat bentuk chord yang mudah (C, G, Am, Em, dan sebagainya) menghasilkan bunyi kunci yang lebih tinggi. Tabel ini memakai chord dari hasil di tab Transposer.</p>
+    <p class="res" id="cu"></p>
+    <div class="tbw"><table class="tb" id="ct"></table></div>
+    <p class="mu sm" id="cn"></p>
+  </div>
+  <div class="card"><h3>Cara membaca</h3>
+    <p><b>Capo di fret n</b> berarti semua senar ditekan di fret itu, jadi bunyi yang keluar n setengah nada lebih tinggi dari bentuk jarinya. Kolom "Bentuk yang dimainkan" adalah chord yang kamu bentuk dengan jari, sedangkan bunyinya tetap sama dengan chord lagu.</p>
+    <p>Kolom <b>Ramah</b> menghitung berapa banyak chord yang berbentuk terbuka dan mudah (tanpa barre), seperti C, D, E, G, A, Am, Dm, Em, dan chord 7th terbuka. Capo yang diberi tanda <b>Disarankan</b> punya nilai paling tinggi, dan kalau sama dipilih capo yang paling rendah.</p>
+  </div>
+</section>
+</main>
+
+<script src="../shared/theory.js"></script>
+<script src="../shared/data/scale-data.js"></script>
+<script src="../shared/data/chord-data.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const {$,$$}=K;
+const KM=K.KEYS,ALL=KM.concat(KM.map(k=>k+"m"));
+const kpc=k=>{const m=/^([A-G])([#b]?)/.exec(k);return K.pcOf(m[1],m[2])};
+const kn=k=>K.nice(k);
+$("#fk").innerHTML=$("#tk").innerHTML=ALL.map(k=>`<option value="${k}">${kn(k)}${k.endsWith("m")?" minor":" mayor"}</option>`).join("");
+$("#fk").value="C";$("#tk").value="D";
+const SAMPLE="Intro: Am F C G\n\nAm            F\nContoh lirik baris pertama\nC             G\nContoh lirik baris kedua\n\n[Am]Lirik dengan [F]chord di [C]dalam kurung [G]siku\n\nBridge: Dm G C Am\nDm  G7  C  Cmaj7";
+$("#inp").value=SAMPLE;
+const sp=(pc,f)=>(f?K.FL:K.SH)[((pc%12)+12)%12];
+function tr(tok,sh,f){const p=K.split(tok);if(!p)return tok;return sp(p.root+sh,f)+p.sfx+(p.b?"/"+sp(p.bass+sh,f):"")}
+const isLab=t=>/^[A-Za-zÀ-ÿ]+:$/.test(t)||/^\[[^\]]*\]$/.test(t)&&!K.split(t.slice(1,-1));
+const isSkip=t=>/^[|\-–x×\d()\/%.:]+$/.test(t)||/^N\.?C\.?$/.test(t);
+function chordLine(line){const t=line.trim().split(/\s+/).filter(Boolean);return t.length>0&&t.some(x=>K.split(x))&&t.every(x=>K.split(x)||isLab(x)||isSkip(x))}
+function trLine(line,sh,f){
+ line=line.replace(/\[([^\]\s]+)\]/g,(m,c)=>K.split(c)?"["+tr(c,sh,f)+"]":m);
+ if(!chordLine(line.replace(/\[([^\]\s]+)\]/g,"$1")))return line;
+ const parts=line.split(/(\s+)/);let carry=0;
+ for(let i=0;i<parts.length;i++){const p=parts[i];
+  if(i%2==0){if(p&&K.split(p)){const n=tr(p,sh,f);carry+=p.length-n.length;parts[i]=n}}
+  else if(carry!==0&&i<parts.length-1){const L=Math.max(1,p.length+carry);carry-=(L-p.length);parts[i]=" ".repeat(L)}}
+ return parts.join("")}
+let outText="",chords=[];
+function go(){
+ const fk=$("#fk").value,tk=$("#tk").value,sh=(kpc(tk)-kpc(fk)+12)%12;
+ const f=$("#acc").value=="a"?K.keyFlat(tk):$("#acc").value=="f";
+ const lines=$("#inp").value.split("\n"),seen=[],set=new Set();
+ outText=lines.map(l=>trLine(l,sh,f)).join("\n");
+ outText.split("\n").forEach(l=>{const m=[];l.replace(/\[([^\]\s]+)\]/g,(a,c)=>{if(K.split(c))m.push(c)});
+  if(chordLine(l.replace(/\[([^\]\s]+)\]/g,"$1")))l.trim().split(/\s+/).forEach(x=>{if(K.split(x))m.push(x)});
+  m.forEach(c=>{if(!set.has(c)){set.add(c);seen.push(c)}})});
+ chords=seen;
+ $("#out").textContent=outText;
+ $("#inf").innerHTML=sh==0?"Kunci tujuan sama dengan kunci asli, tidak ada perubahan.":`Dari <b>${kn(fk)}</b> ke <b>${kn(tk)}</b>: ${sh<=6?"naik <b>"+sh+"</b>":"turun <b>"+(12-sh)+"</b>"} setengah nada.`;
+ const r=REY.parse(kn(tk.replace(/m$/,""))),mn=tk.endsWith("m"),d=K.degs(r,REY_DATA.scales[mn?5:0][1]);
+ $("#dia").innerHTML=`Chord kunci <b>${kn(tk)}</b> (${mn?"minor":"mayor"}): `+d.map(x=>`<b>${x.tri}</b>`).join(" · ");
+ capo()}
+const OPEN=new Set("C Cmaj7 C7 Cadd9 C6 D Dm D7 Dsus2 Dsus4 Dmaj7 Dm7 E Em E7 Em7 Esus4 G G7 Gmaj7 Gadd9 A Am A7 Am7 Asus2 Asus4 Amaj7 Fmaj7 B7".split(" "));
+function capo(){
+ const tk=$("#tk").value;$("#cu").innerHTML=chords.length?`Chord lagu (kunci ${kn(tk)}): <b>${chords.map(kn).join("  ")}</b>`:"Belum ada chord. Tempel lagu di tab Transposer.";
+ const rows=[];
+ if(chords.length)for(let c=0;c<=9;c++){
+  const shp=chords.map(x=>tr(x,-c,false)).map((x,i)=>{const p=K.split(x),n=K.KEYS[p.root];return n+p.sfx+(p.b?"/"+K.KEYS[p.bass]:"")});
+  const ok=shp.filter(x=>{const p=K.split(x);return OPEN.has(K.KEYS[p.root]+K.normSym(p.sfx))}).length;
+  rows.push({c,shp,ok})}
+ const best=Math.max(0,...rows.map(r=>r.ok)),first=rows.find(r=>r.ok==best);
+ $("#ct").innerHTML=rows.length?`<tr><th>Capo</th><th>Bentuk yang dimainkan</th><th>Ramah</th></tr>`+rows.map(r=>`<tr${r==first?' class="bor"':""}><td>${r.c?"Fret "+r.c:"Tanpa capo"}</td><td>${r.shp.map(kn).join("  ")}</td><td>${r.ok}/${chords.length}${r==first?" Disarankan":""}</td></tr>`).join(""):"";
+ $("#cn").textContent=rows.length?"Bentuk yang ditulis memakai penulisan paling umum untuk gitar. Chord dengan bass (seperti G/B) dinilai dari nada dasarnya.":""}
+["input"].forEach(e=>$("#inp").addEventListener(e,go));
+$("#fk").onchange=$("#tk").onchange=$("#acc").onchange=go;
+const step=d=>{const tk=$("#tk").value,mn=tk.endsWith("m"),pc=(kpc(tk)+d+12)%12;$("#tk").value=KM[pc]+(mn?"m":"");go()};
+$("#up").onclick=()=>step(1);$("#dn").onclick=()=>step(-1);
+$("#ex").onclick=()=>{$("#inp").value=SAMPLE;go()};$("#clr").onclick=()=>{$("#inp").value="";go()};
+$("#cp").onclick=e=>K.copy(outText,e.target);
+$("#pl").onclick=()=>{K.list(chords.slice(0,8).map(c=>{const p=K.parse(c);return p?K.midiOf(K.nice(p.r),p.row).midi:[]}).filter(m=>m.length),1.0)};
+const T=["1 Transposer","2 Capo"];
+$("#nav").innerHTML=T.map((t,i)=>`<button data-i="${i}" class="${i?"":"on"}">${t}</button>`).join("");
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;$$("#nav button").forEach(x=>x.classList.toggle("on",x===b));$$("main section").forEach((s,i)=>s.classList.toggle("on",i==+b.dataset.i));scrollTo(0,0)};
+go();
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>
