@@ -3,7 +3,8 @@
 var NN=["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"];
 var FR={};
 FR.TUN={
- gitar:[["Standar","E A D G B E",[40,45,50,55,59,64]],["Drop D","D A D G B E",[38,45,50,55,59,64]],["DADGAD","D A D G A D",[38,45,50,55,57,62]],["Open G","D G D G B D",[38,43,50,55,59,62]],["Open D","D A D F♯ A D",[38,45,50,54,57,62]],["Open E","E B E G♯ B E",[40,47,52,56,59,64]],["Setengah nada turun","E♭ A♭ D♭ G♭ B♭ E♭",[39,44,49,54,58,63]]]
+ gitar:[["Standar","E A D G B E",[40,45,50,55,59,64]],["Drop D","D A D G B E",[38,45,50,55,59,64]],["DADGAD","D A D G A D",[38,45,50,55,57,62]],["Open G","D G D G B D",[38,43,50,55,59,62]],["Open D","D A D F♯ A D",[38,45,50,54,57,62]],["Open E","E B E G♯ B E",[40,47,52,56,59,64]],["Setengah nada turun","E♭ A♭ D♭ G♭ B♭ E♭",[39,44,49,54,58,63]]],
+ uke:[["4 senar · Standar","G C E A",[67,60,64,69],0],["4 senar · Low G","G C E A (G rendah)",[55,60,64,69],0],["4 senar · Tuning D","A D F♯ B",[69,62,66,71],0],["4 senar · Bariton","D G B E",[50,55,59,64],0],["3 senar · Standar","G B E",[67,59,64],0],["3 senar · Kentrung","A C♯ F♯",[69,61,66],0],["Gitarlele (6 senar)","A D G C E A",[45,50,55,60,64,69],1]]
 };
 function nums(toks){return toks.map(function(t){return +/^\d+/.exec(t)[0]})}
 /* ch: {root:pc, toks:[...], pcs:[...], bass:pc|null}; o: {span,maxFret,minStr,rootBass,maxN} */
