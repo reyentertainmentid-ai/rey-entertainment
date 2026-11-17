@@ -247,11 +247,11 @@
   function N(s){var m=/^([A-G])(#|b)?(-?\d)$/.exec(s);var b={C:0,D:2,E:4,F:5,G:7,A:9,B:11}[m[1]]+(m[2]==="#"?1:m[2]==="b"?-1:0);return 12*(parseInt(m[3],10)+1)+b;}
   var GROUPS = [], TUNINGS = {};
   function T(id,name,notes,o){o=o||{};var ns=notes.split(" ");var t={id:id,name:name,midi:ns.map(N),flats:!!o.flats,off:o.off,rowSize:o.rowSize};
-    if(o.rowSize)t.desc=ns.slice(0,o.rowSize).map(function(x){return x.replace(/-?\d$/,"");}).join(" ");
+    if(o.desc)t.desc=o.desc;else if(o.rowSize)t.desc=ns.slice(0,o.rowSize).map(function(x){return x.replace(/-?\d$/,"");}).join(" ");
     TUNINGS[id]=t;return t;}
   function G(label,arr){GROUPS.push({label:label,items:arr});}
   (function () {
-    var c = { id: "chrom", name: "Kromatik (semua nada)", chrom: true, midi: [] };
+    var c = { id: "chrom", name: "Kromatik", chrom: true, midi: [] };
     TUNINGS.chrom = c;
     GROUPS.push({ label: "Kromatik", items: [c] });
   })();
@@ -262,25 +262,25 @@
     T("diaC","Diatonik C","G5 F5 E5 D5 C5 F4 E4 D4 C4 B3 A3 G3 D3 C3 B2 G2 F2 D2 C2 B1",{rowSize:5})
   ]);
   G("Laras Pelog", [
-    T("pelog","Pelog 1 = Tugu · DO = G","G5 F#5 D5 C5 B4 G4 F#4 D4 C4 B3 G3 F#3 D3 C3 B2 G2 F#2 D2 C2 B1",{rowSize:5}),
-    T("pelD","Pelog 1 = Panelu · DO = D","G5 F#5 D5 C#5 A4 G4 F#4 D4 C#4 A3 G3 F#3 D3 C#3 A2 G2 F#2 D2 C#2 A1",{rowSize:5}),
-    T("matar","Pelog 1 = Galimer (Mandalungan) · DO = C","G5 F5 E5 C5 B4 G4 F4 E4 C4 B3 G3 F3 E3 C3 B2 G2 F2 E2 C2 B1",{rowSize:5}),
-    T("pelJ","Pelog Jawa · 1 = B (DO = G)","G5 F#5 E5 D5 C5 B4 A4 G4 F#4 E4 D4 C4 B3 A3 G3 F#3 E3 D3 C3 B2",{rowSize:5})
+    T("pelog","Pelog DA Tugu Do = G","G5 F#5 D5 C5 B4 G4 F#4 D4 C4 B3 G3 F#3 D3 C3 B2 G2 F#2 D2 C2 B1",{rowSize:5}),
+    T("pelD","Pelog DA Penelu Do = D","G5 F#5 D5 C#5 A4 G4 F#4 D4 C#4 A3 G3 F#3 D3 C#3 A2 G2 F#2 D2 C#2 A1",{rowSize:5}),
+    T("matar","Pelog DA Galimer (Mandalungan) Do = C","G5 F5 E5 C5 B4 G4 F4 E4 C4 B3 G3 F3 E3 C3 B2 G2 F2 E2 C2 B1",{rowSize:5}),
+    T("pelJ","Pelog Jawa Do = G","G5 F#5 E5 D5 C5 F#4 E4 D4 C4 B3 A3 G3 B2 A2 G2 F#2 E2 D2 C2 B1",{rowSize:5,desc:"B4 – C5 – D5 – E5 – F#5 – G5 – A5"})
   ]);
   G("Laras Madenda", [
-    T("mad3","Madenda TI Tugu (Sorog) · DO = G","G5 F#5 E5 C5 B4 G4 F#4 E4 C4 B3 G3 F#3 E3 C3 B2 G2 F#2 E2 C2 B1",{rowSize:5}),
-    T("mad4","Madenda TI Panelu (Wisaya) · DO = D","G5 F#5 D5 C#5 B4 G4 F#4 D4 C#4 B3 G3 F#3 D3 C#3 B2 G2 F#2 D2 C#2 B1",{rowSize:5}),
-    T("madC","Madenda TI Galimer · DO = C","A5 F5 E5 C5 B4 A4 F4 E4 C4 B3 A3 F3 E3 C3 B2 A2 F2 E2 C2 B1",{rowSize:5})
+    T("mad3","Madenda TI Tugu (Sorog) Do = G","G5 F#5 E5 C5 B4 G4 F#4 E4 C4 B3 G3 F#3 E3 C3 B2 G2 F#2 E2 C2 B1",{rowSize:5}),
+    T("mad4","Madenda TI Panelu (Wisaya) Do = D","G5 F#5 D5 C#5 B4 G4 F#4 D4 C#4 B3 G3 F#3 D3 C#3 B2 G2 F#2 D2 C#2 B1",{rowSize:5}),
+    T("madC","Madenda TI Galimer Do = C","A5 F5 E5 C5 B4 A4 F4 E4 C4 B3 A3 F3 E3 C3 B2 A2 F2 E2 C2 B1",{rowSize:5})
   ]);
   G("Laras Salendro", [
-    T("salsunda","Salendro Sunda · DO = G","G5 F5 D5 C5 A#4 G4 F4 D4 C4 A#3 G3 F3 D3 C3 A#2 G2 F2 D2 C2 A#1",{rowSize:5,off:SUNDA_OFF}),
-    T("salJ","Salendro Jawa · DO = G","G5 E5 D5 B4 A4 G4 E4 D4 B3 A3 G3 E3 D3 B2 A2 G2 E2 D2 B1 A1",{rowSize:5}),
-    T("salcina","Salendro Cina · DO = G","G5 F5 D5 C5 A#4 G4 F4 D4 C4 A#3 G3 F3 D3 C3 A#2 G2 F2 D2 C2 A#1",{rowSize:5})
+    T("salsunda","Salendro Sunda Do = G","G5 F5 D5 C5 A#4 G4 F4 D4 C4 A#3 G3 F3 D3 C3 A#2 G2 F2 D2 C2 A#1",{rowSize:5,off:SUNDA_OFF}),
+    T("salJ","Salendro Jawa Do = G","G5 E5 D5 B4 A4 G4 E4 D4 B3 A3 G3 E3 D3 B2 A2 G2 E2 D2 B1 A1",{rowSize:5}),
+    T("salcina","Salendro Cina Do = G","G5 F5 D5 C5 A#4 G4 F4 D4 C4 A#3 G3 F3 D3 C3 A#2 G2 F2 D2 C2 A#1",{rowSize:5})
   ]);
   G("POP SUNDA", [
-    T("popG","Madenda · DO = G","G5 F#5 E5 C5 B4 G4 F#4 E4 C4 B3 G3 F#3 D3 C3 B2 G2 F#2 D2 C2 B1",{rowSize:5}),
-    T("popD","Madenda · DO = D","G5 F#5 D5 C#5 B4 G4 F#4 D4 C#4 B3 G3 F#3 D3 C3 B2 G2 F#2 D2 C#2 B1",{rowSize:5}),
-    T("popC","Madenda · DO = C","A5 F5 E5 C5 B4 A4 F4 E4 C4 B3 A3 F3 D3 C3 B2 G2 F2 D2 C2 B1",{rowSize:5})
+    T("popG","Madenda Do = G","G5 F#5 E5 C5 B4 G4 F#4 E4 C4 B3 G3 F#3 D3 C3 B2 G2 F#2 D2 C2 B1",{rowSize:5}),
+    T("popD","Madenda Do = D","G5 F#5 D5 C#5 B4 G4 F#4 D4 C#4 B3 G3 F#3 D3 C#3 B2 G2 F#2 D2 C#2 B1",{rowSize:5}),
+    T("popC","Madenda Do = C","A5 F5 E5 C5 B4 A4 F4 E4 C4 B3 A3 F3 D3 C3 B2 G2 F2 D2 C2 B1",{rowSize:5})
   ]);
   var CFG = {"minHz": 45, "W": 4096, "fft": 8192};
   var FOLD = "manual";
@@ -362,7 +362,7 @@
       g.items.forEach(function (t) {
         var o = document.createElement("option");
         o.value = t.id;
-        o.textContent = t.chrom ? t.name : t.name + "  ·  " + (t.desc || noteList(t));
+        o.textContent = t.name + " : " + (t.chrom ? "Semua Nada" : (t.desc || noteList(t)));
         if (t.id === state.tuning) o.selected = true;
         og.appendChild(o);
       });
