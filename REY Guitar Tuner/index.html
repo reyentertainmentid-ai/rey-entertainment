@@ -394,7 +394,7 @@
     b.className = "string"; b.type = "button";
     b.setAttribute("aria-label", "Nada " + nameOf(m, t.flats) + octOf(m));
     b.innerHTML = '<span class="n">' + nameOf(m, t.flats) + '<i>' + octOf(m) + '</i></span>';
-    b.addEventListener("click", function () { state.sel = i; setMode("manual"); });
+    b.addEventListener("click", function () { state.sel = i; setMode("manual"); playString(i); });
     buttons[i] = b;
     return b;
   }
@@ -447,6 +447,29 @@
   // ---------- Audio ----------
   var ctx = null, analyser = null, stream = null, source = null, buf = null, wakeLock = null;
 
+  // Bunyikan nada target saat senar dipilih (mode Pilih senar)
+  var toneNodes = null;
+  function playString(i) {
+    try {
+      var c = getCtx(), f = (typeof tfreq === "function") ? tfreq(i) : midiFreq(targets()[i]);
+      if (!(f > 0)) return;
+      if (toneNodes) { try { toneNodes.g.gain.cancelScheduledValues(c.currentTime); toneNodes.g.gain.setTargetAtTime(0.0001, c.currentTime, 0.03); toneNodes.o.forEach(function (o) { o.stop(c.currentTime + 0.15); }); } catch (e) {} }
+      var t0 = c.currentTime, dur = 2.2;
+      var g = c.createGain(), lp = c.createBiquadFilter();
+      lp.type = "lowpass"; lp.frequency.value = Math.min(6000, f * 8); lp.Q.value = 0.5;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.5, t0 + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      lp.connect(g); g.connect(c.destination);
+      var o = [[1, "triangle", 1], [2, "sine", 0.45], [3, "sine", 0.25]].map(function (p) {
+        var os = c.createOscillator(), pg = c.createGain();
+        os.type = p[1]; os.frequency.value = f * p[0]; pg.gain.value = p[2];
+        os.connect(pg); pg.connect(lp); os.start(t0); os.stop(t0 + dur + 0.05);
+        return os;
+      });
+      toneNodes = { g: g, o: o };
+    } catch (e) {}
+  }
   function getCtx() {
     if (!ctx) { var AC = window.AudioContext || window.webkitAudioContext; ctx = new AC(); }
     if (ctx.state === "suspended") ctx.resume();
